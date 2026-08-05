@@ -346,9 +346,6 @@ export default function AboutPage() {
 {/* Subjects We Offer */}
 <motion.section
   className="py-16 sm:py-20 md:py-28 bg-muted/30"
-  initial="hidden"
-  whileInView="visible"
-  viewport={{ once: true, amount: 0.2 }}
 >
   <div className="container mx-auto px-4">
 
