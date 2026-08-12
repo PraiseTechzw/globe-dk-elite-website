@@ -292,7 +292,7 @@ export default function SignupPage() {
 
                         <Input
                           id="firstName"
-                          placeholder="John"
+                          placeholder="First Name"
                           value={form.firstName}
                           onChange={(e) =>
                             updateField(
@@ -313,7 +313,7 @@ export default function SignupPage() {
 
                         <Input
                           id="lastName"
-                          placeholder="Daka"
+                          placeholder="Last Name"
                           value={form.lastName}
                           onChange={(e) =>
                             updateField(
