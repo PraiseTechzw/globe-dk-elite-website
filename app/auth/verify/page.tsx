@@ -1,10 +1,10 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import Link from "next/link"
 
-export default function VerifyPage() {
+function VerifyContent() {
   const searchParams = useSearchParams()
 
   const [status, setStatus] = useState<
@@ -118,5 +118,29 @@ export default function VerifyPage() {
         )}
       </div>
     </main>
+  )
+}
+
+function VerifyLoading() {
+  return (
+    <main className="flex min-h-screen items-center justify-center px-5">
+      <div className="w-full max-w-md text-center">
+        <h1 className="text-3xl font-bold">
+          Verifying Email...
+        </h1>
+
+        <p className="mt-4 text-muted-foreground">
+          Please wait while we verify your account.
+        </p>
+      </div>
+    </main>
+  )
+}
+
+export default function VerifyPage() {
+  return (
+    <Suspense fallback={<VerifyLoading />}>
+      <VerifyContent />
+    </Suspense>
   )
 }
