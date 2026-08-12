@@ -38,6 +38,23 @@ import { createClient } from "@/lib/supabaseClient"
 
 export default function SignupPage() {
   const router = useRouter()
+
+  /*
+   * Supabase is ONLY used here for Google OAuth.
+   *
+   * Email/password registration is completely custom:
+   *
+   * Signup page
+   *      ↓
+   * POST /api/signup
+   *      ↓
+   * Supabase database
+   *      ↓
+   * Resend
+   *      ↓
+   * Verification email
+   */
+
   const supabase = createClient()
 
   const [showPassword, setShowPassword] =
@@ -47,6 +64,9 @@ export default function SignupPage() {
     useState(false)
 
   const [loading, setLoading] =
+    useState(false)
+
+  const [googleLoading, setGoogleLoading] =
     useState(false)
 
   const [errorMessage, setErrorMessage] =
@@ -83,176 +103,203 @@ export default function SignupPage() {
   }
 
   // ============================================================
-  // EMAIL + PASSWORD SIGNUP
+  // CUSTOM EMAIL SIGNUP
   // ============================================================
 
   const handleSignup = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault()
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault()
 
-    setErrorMessage("")
-    setSuccessMessage("")
+  setErrorMessage("")
+  setSuccessMessage("")
 
-    // ==========================================================
-    // VALIDATION
-    // ==========================================================
+  // ============================================================
+  // CLIENT-SIDE VALIDATION
+  // ============================================================
 
-    if (form.password !== form.confirmPassword) {
-      setErrorMessage(
-        "Passwords do not match."
-      )
-      return
-    }
-
-    if (form.password.length < 8) {
-      setErrorMessage(
-        "Password must be at least 8 characters long."
-      )
-      return
-    }
-
-    if (!form.firstName.trim()) {
-      setErrorMessage(
-        "Please enter your first name."
-      )
-      return
-    }
-
-    if (!form.lastName.trim()) {
-      setErrorMessage(
-        "Please enter your last name."
-      )
-      return
-    }
-
-    if (!form.email.trim()) {
-      setErrorMessage(
-        "Please enter your email address."
-      )
-      return
-    }
-
-    if (!form.level) {
-      setErrorMessage(
-        "Please select your current level."
-      )
-      return
-    }
-
-    if (!form.school.trim()) {
-      setErrorMessage(
-        "Please enter your school."
-      )
-      return
-    }
-
-    // ==========================================================
-    // API REQUEST
-    // ==========================================================
-
-    try {
-      setLoading(true)
-
-      const response = await fetch(
-        "/api/signup",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify({
-            firstName:
-              form.firstName.trim(),
-
-            lastName:
-              form.lastName.trim(),
-
-            email:
-              form.email.trim().toLowerCase(),
-
-            phone:
-              form.phone.trim(),
-
-            password:
-              form.password,
-
-            level:
-              form.level,
-
-            school:
-              form.school.trim(),
-
-            guardianName:
-              form.guardianName.trim(),
-
-            guardianPhone:
-              form.guardianPhone.trim(),
-          }),
-        }
-      )
-
-      const result = await response.json()
-
-      // ========================================================
-      // API ERROR
-      // ========================================================
-
-      if (!response.ok || !result.success) {
-        setErrorMessage(
-          result.message ||
-            "Unable to create your account."
-        )
-
-        return
-      }
-
-      // ========================================================
-      // EMAIL CONFIRMATION REQUIRED
-      // ========================================================
-
-      if (
-        result.requiresEmailConfirmation
-      ) {
-        setSuccessMessage(
-          result.message ||
-            "Your account has been created. Please check your email and confirm your account before signing in."
-        )
-
-        setForm((previous) => ({
-          ...previous,
-          password: "",
-          confirmPassword: "",
-        }))
-
-        return
-      }
-
-      // ========================================================
-      // ACCOUNT CREATED + SESSION AVAILABLE
-      // ========================================================
-
-      router.push(
-        "/student/dashboard"
-      )
-
-      router.refresh()
-    } catch (error) {
-      console.error(
-        "Signup request error:",
-        error
-      )
-
-      setErrorMessage(
-        "Something went wrong while creating your account. Please try again."
-      )
-    } finally {
-      setLoading(false)
-    }
+  if (form.password !== form.confirmPassword) {
+    setErrorMessage("Passwords do not match.")
+    return
   }
 
+  if (form.password.length < 8) {
+    setErrorMessage(
+      "Password must be at least 8 characters long."
+    )
+    return
+  }
+
+  if (!form.firstName.trim()) {
+    setErrorMessage("Please enter your first name.")
+    return
+  }
+
+  if (!form.lastName.trim()) {
+    setErrorMessage("Please enter your last name.")
+    return
+  }
+
+  if (!form.email.trim()) {
+    setErrorMessage("Please enter your email address.")
+    return
+  }
+
+  if (!form.level) {
+    setErrorMessage("Please select your current level.")
+    return
+  }
+
+  if (!form.school.trim()) {
+    setErrorMessage("Please enter your school.")
+    return
+  }
+
+  // ============================================================
+  // SEND REQUEST
+  // ============================================================
+
+  try {
+    setLoading(true)
+
+    const payload = {
+      firstName: form.firstName.trim(),
+      lastName: form.lastName.trim(),
+      email: form.email.trim().toLowerCase(),
+      phone: form.phone.trim(),
+      password: form.password,
+      level: form.level,
+      school: form.school.trim(),
+      guardianName: form.guardianName.trim(),
+      guardianPhone: form.guardianPhone.trim(),
+    }
+
+    console.log(
+      "Sending signup request:",
+      payload
+    )
+
+    const response = await fetch(
+      "/api/signup",
+      {
+        method: "POST",
+
+        headers: {
+          "Content-Type": "application/json",
+          "Accept": "application/json",
+        },
+
+        body: JSON.stringify(payload),
+      }
+    )
+
+    // ============================================================
+    // READ RAW RESPONSE FIRST
+    // ============================================================
+
+    const responseText = await response.text()
+
+    console.log(
+      "Signup API status:",
+      response.status
+    )
+
+    console.log(
+      "Signup API content-type:",
+      response.headers.get("content-type")
+    )
+
+    console.log(
+      "Raw signup API response:",
+      responseText
+    )
+
+    // ============================================================
+    // TRY TO PARSE JSON
+    // ============================================================
+
+    let result: {
+      success?: boolean
+      message?: string
+      requiresEmailConfirmation?: boolean
+      user?: {
+        id?: string
+        email?: string
+        firstName?: string
+        lastName?: string
+      }
+    } = {}
+
+    try {
+      result = JSON.parse(responseText)
+    } catch (jsonError) {
+      console.error(
+        "Signup API did not return valid JSON:",
+        jsonError
+      )
+
+      console.error(
+        "Full server response:",
+        responseText
+      )
+
+      setErrorMessage(
+        `The signup server returned an unexpected response. HTTP status: ${response.status}`
+      )
+
+      return
+    }
+
+    // ============================================================
+    // API ERROR
+    // ============================================================
+
+    if (
+      !response.ok ||
+      !result.success
+    ) {
+      setErrorMessage(
+        result.message ||
+          "Unable to create your account."
+      )
+
+      return
+    }
+
+    // ============================================================
+    // SUCCESS
+    // ============================================================
+
+    setSuccessMessage(
+      result.message ||
+        "Your account has been created successfully. Please check your email and verify your account before signing in."
+    )
+
+    // ============================================================
+    // CLEAR PASSWORDS
+    // ============================================================
+
+    setForm((previous) => ({
+      ...previous,
+      password: "",
+      confirmPassword: "",
+    }))
+
+  } catch (error) {
+    console.error(
+      "Signup request error:",
+      error
+    )
+
+    setErrorMessage(
+      error instanceof Error
+        ? error.message
+        : "Something went wrong while creating your account. Please try again."
+    )
+  } finally {
+    setLoading(false)
+  }
+}
   // ============================================================
   // GOOGLE SIGNUP
   // ============================================================
@@ -262,9 +309,11 @@ export default function SignupPage() {
     setSuccessMessage("")
 
     try {
-      setLoading(true)
+      setGoogleLoading(true)
 
-      const { error } =
+      const {
+        error,
+      } =
         await supabase.auth.signInWithOAuth({
           provider: "google",
 
@@ -285,7 +334,7 @@ export default function SignupPage() {
             "Unable to continue with Google."
         )
 
-        setLoading(false)
+        setGoogleLoading(false)
       }
     } catch (error) {
       console.error(
@@ -297,7 +346,7 @@ export default function SignupPage() {
         "Unable to connect to Google. Please try again."
       )
 
-      setLoading(false)
+      setGoogleLoading(false)
     }
   }
 
@@ -321,6 +370,7 @@ export default function SignupPage() {
               href="/"
               className="flex items-center gap-3 text-primary-foreground"
             >
+
               <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white">
 
                 <Image
@@ -345,6 +395,7 @@ export default function SignupPage() {
                 </p>
 
               </div>
+
             </Link>
 
             {/* HERO */}
@@ -358,17 +409,23 @@ export default function SignupPage() {
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight xl:text-5xl">
+
                 Start your
+
                 <br />
+
                 learning journey.
+
               </h1>
 
               <p className="mt-6 text-lg leading-8 opacity-85">
+
                 Create your GlobeDK Elite Academy
                 account and gain access to tools
                 designed to make examination
                 preparation more intelligent and
                 effective.
+
               </p>
 
               <div className="mt-8 space-y-4">
@@ -404,10 +461,13 @@ export default function SignupPage() {
             </div>
 
             <p className="text-xs text-primary-foreground/60">
+
               © {new Date().getFullYear()} GlobeDK Elite Academy.
+
             </p>
 
           </div>
+
         </div>
 
         {/* ====================================================
@@ -483,7 +543,9 @@ export default function SignupPage() {
                 {errorMessage && (
 
                   <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+
                     {errorMessage}
+
                   </div>
 
                 )}
@@ -493,7 +555,9 @@ export default function SignupPage() {
                 {successMessage && (
 
                   <div className="mb-5 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-sm text-green-700 dark:text-green-400">
+
                     {successMessage}
+
                   </div>
 
                 )}
@@ -505,7 +569,10 @@ export default function SignupPage() {
                   variant="outline"
                   className="h-11 w-full"
                   onClick={handleGoogleSignup}
-                  disabled={loading}
+                  disabled={
+                    loading ||
+                    googleLoading
+                  }
                 >
 
                   <svg
@@ -535,7 +602,7 @@ export default function SignupPage() {
 
                   </svg>
 
-                  {loading
+                  {googleLoading
                     ? "Please wait..."
                     : "Sign up with Google"}
 
@@ -553,7 +620,9 @@ export default function SignupPage() {
 
                 </div>
 
-                {/* SIGNUP FORM */}
+                {/* ==================================================
+                    EMAIL SIGNUP FORM
+                ================================================== */}
 
                 <form
                   onSubmit={handleSignup}
@@ -587,6 +656,7 @@ export default function SignupPage() {
                             )
                           }
                           required
+                          disabled={loading}
                         />
 
                       </div>
@@ -608,6 +678,7 @@ export default function SignupPage() {
                             )
                           }
                           required
+                          disabled={loading}
                         />
 
                       </div>
@@ -649,6 +720,7 @@ export default function SignupPage() {
                               )
                             }
                             required
+                            disabled={loading}
                           />
 
                         </div>
@@ -677,6 +749,7 @@ export default function SignupPage() {
                                 e.target.value
                               )
                             }
+                            disabled={loading}
                           />
 
                         </div>
@@ -717,6 +790,7 @@ export default function SignupPage() {
                               )
                             }
                             required
+                            disabled={loading}
                             className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm"
                           >
 
@@ -780,6 +854,7 @@ export default function SignupPage() {
                               )
                             }
                             required
+                            disabled={loading}
                           />
 
                         </div>
@@ -821,6 +896,7 @@ export default function SignupPage() {
                                 e.target.value
                               )
                             }
+                            disabled={loading}
                           />
 
                         </div>
@@ -844,6 +920,7 @@ export default function SignupPage() {
                               e.target.value
                             )
                           }
+                          disabled={loading}
                         />
 
                       </div>
@@ -890,6 +967,7 @@ export default function SignupPage() {
                             }
                             minLength={8}
                             required
+                            disabled={loading}
                           />
 
                           <button
@@ -899,6 +977,7 @@ export default function SignupPage() {
                                 !showPassword
                               )
                             }
+                            disabled={loading}
                             className="absolute right-3 top-2.5 text-muted-foreground"
                           >
 
@@ -931,7 +1010,9 @@ export default function SignupPage() {
                             }
                             placeholder="Repeat password"
                             className="pr-10"
-                            value={form.confirmPassword}
+                            value={
+                              form.confirmPassword
+                            }
                             onChange={(e) =>
                               updateField(
                                 "confirmPassword",
@@ -940,6 +1021,7 @@ export default function SignupPage() {
                             }
                             minLength={8}
                             required
+                            disabled={loading}
                           />
 
                           <button
@@ -949,6 +1031,7 @@ export default function SignupPage() {
                                 !showConfirmPassword
                               )
                             }
+                            disabled={loading}
                             className="absolute right-3 top-2.5 text-muted-foreground"
                           >
 
@@ -975,11 +1058,13 @@ export default function SignupPage() {
                     <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
 
                     <p className="text-xs leading-5 text-muted-foreground">
+
                       Your account information is securely
                       stored and is used to provide your
                       GlobeDK learning experience. By
                       creating an account, you agree to the
-                      academy's terms and privacy policy.
+                      academy&apos;s terms and privacy policy.
+
                     </p>
 
                   </div>
@@ -989,7 +1074,10 @@ export default function SignupPage() {
                   <Button
                     type="submit"
                     className="h-11 w-full"
-                    disabled={loading}
+                    disabled={
+                      loading ||
+                      googleLoading
+                    }
                   >
 
                     {loading

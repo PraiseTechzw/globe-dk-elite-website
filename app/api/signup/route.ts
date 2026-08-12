@@ -1,46 +1,56 @@
-import { NextRequest, NextResponse } from "next/server"
-import { createClient } from "@supabase/supabase-js"
+import bcrypt from "bcryptjs"
+import crypto from "crypto"
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+import {
+  NextRequest,
+  NextResponse,
+} from "next/server"
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error("Missing Supabase environment variables.")
-}
+import { supabaseAdmin } from "@/lib/supabaseAdmin"
+import { resend } from "@/lib/resend"
 
-/*
- * Server-side Supabase client.
- *
- * IMPORTANT:
- * We intentionally use the ANON key here.
- * We do NOT use the service-role key for normal signup.
- */
-const supabase = createClient(
-  supabaseUrl,
-  supabaseAnonKey,
-  {
-    auth: {
-      autoRefreshToken: false,
-      persistSession: false,
-    },
-  }
-)
-
-export async function POST(request: NextRequest) {
+export async function POST(
+  request: NextRequest
+) {
   try {
+    // ============================================================
+    // READ REQUEST
+    // ============================================================
+
     const body = await request.json()
 
-    const {
-      firstName,
-      lastName,
-      email,
-      phone,
-      password,
-      level,
-      school,
-      guardianName,
-      guardianPhone,
-    } = body
+    // ============================================================
+    // GET DATA
+    // ============================================================
+
+    const firstName =
+      String(body.firstName || "").trim()
+
+    const lastName =
+      String(body.lastName || "").trim()
+
+    const email =
+      String(body.email || "")
+        .trim()
+        .toLowerCase()
+
+    const phone =
+      String(body.phone || "").trim()
+
+    const password =
+      String(body.password || "")
+
+    const level =
+      String(body.level || "").trim()
+
+    const school =
+      String(body.school || "").trim()
+
+    const guardianName =
+      String(body.guardianName || "").trim()
+
+    const guardianPhone =
+      String(body.guardianPhone || "").trim()
 
     // ============================================================
     // VALIDATION
@@ -60,7 +70,9 @@ export async function POST(request: NextRequest) {
           message:
             "Please complete all required fields.",
         },
-        { status: 400 }
+        {
+          status: 400,
+        }
       )
     }
 
@@ -71,147 +83,413 @@ export async function POST(request: NextRequest) {
           message:
             "Password must be at least 8 characters long.",
         },
-        { status: 400 }
+        {
+          status: 400,
+        }
       )
     }
 
-    const normalizedEmail =
-      String(email).trim().toLowerCase()
-
-    const cleanFirstName =
-      String(firstName).trim()
-
-    const cleanLastName =
-      String(lastName).trim()
-
-    const cleanPhone =
-      String(phone || "").trim()
-
-    const cleanLevel =
-      String(level).trim()
-
-    const cleanSchool =
-      String(school).trim()
-
-    const cleanGuardianName =
-      String(guardianName || "").trim()
-
-    const cleanGuardianPhone =
-      String(guardianPhone || "").trim()
-
     // ============================================================
-    // CREATE SUPABASE AUTH USER
+    // BASIC EMAIL VALIDATION
     // ============================================================
 
-    const { data, error } =
-      await supabase.auth.signUp({
-        email: normalizedEmail,
-        password,
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-        options: {
-          emailRedirectTo:
-            `${process.env.NEXT_PUBLIC_SITE_URL || request.nextUrl.origin}/auth/callback`,
-
-          /*
-           * These values are stored in auth.users.user_metadata.
-           *
-           * Your database trigger can then use these values
-           * to populate profiles and students.
-           */
-          data: {
-            first_name: cleanFirstName,
-            last_name: cleanLastName,
-
-            full_name:
-              `${cleanFirstName} ${cleanLastName}`.trim(),
-
-            phone: cleanPhone,
-
-            level: cleanLevel,
-
-            school: cleanSchool,
-
-            guardian_name:
-              cleanGuardianName,
-
-            guardian_phone:
-              cleanGuardianPhone,
-
-            role: "student",
-          },
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "Please enter a valid email address.",
         },
-      })
+        {
+          status: 400,
+        }
+      )
+    }
 
     // ============================================================
-    // SUPABASE ERROR
+    // CHECK EXISTING USER
     // ============================================================
 
-    if (error) {
+    const {
+      data: existingUser,
+      error: existingUserError,
+    } = await supabaseAdmin
+      .from("users")
+      .select("id, email, email_verified")
+      .eq("email", email)
+      .maybeSingle()
+
+    if (existingUserError) {
       console.error(
-        "Supabase signup error:",
-        error
+        "Existing user lookup error:",
+        existingUserError
       )
 
       return NextResponse.json(
         {
           success: false,
           message:
-            error.message ||
+            "Unable to check whether this email already exists.",
+        },
+        {
+          status: 500,
+        }
+      )
+    }
+
+    // ============================================================
+    // EMAIL ALREADY EXISTS
+    // ============================================================
+
+    if (existingUser) {
+      return NextResponse.json(
+        {
+          success: false,
+          message:
+            "An account with this email already exists.",
+        },
+        {
+          status: 409,
+        }
+      )
+    }
+
+    // ============================================================
+    // HASH PASSWORD
+    // ============================================================
+
+    const passwordHash =
+      await bcrypt.hash(
+        password,
+        12
+      )
+
+    // ============================================================
+    // CREATE EMAIL VERIFICATION TOKEN
+    // ============================================================
+
+    const verificationToken =
+      crypto
+        .randomBytes(32)
+        .toString("hex")
+
+    // ============================================================
+    // TOKEN EXPIRATION
+    //
+    // 24 HOURS
+    // ============================================================
+
+    const verificationExpiresAt =
+      new Date(
+        Date.now() +
+          24 * 60 * 60 * 1000
+      ).toISOString()
+
+    // ============================================================
+    // INSERT USER
+    // ============================================================
+
+    const {
+      data: user,
+      error: insertError,
+    } = await supabaseAdmin
+      .from("users")
+      .insert({
+        email,
+
+        password_hash:
+          passwordHash,
+
+        first_name:
+          firstName,
+
+        last_name:
+          lastName,
+
+        phone,
+
+        level,
+
+        school,
+
+        guardian_name:
+          guardianName,
+
+        guardian_phone:
+          guardianPhone,
+
+        role: "student",
+
+        email_verified: false,
+
+        verification_token:
+          verificationToken,
+
+        verification_token_expires_at:
+          verificationExpiresAt,
+      })
+      .select(
+        "id, email, first_name, last_name"
+      )
+      .single()
+
+    // ============================================================
+    // DATABASE ERROR
+    // ============================================================
+
+    if (insertError) {
+      console.error(
+        "Supabase insert error:",
+        insertError
+      )
+
+      return NextResponse.json(
+        {
+          success: false,
+          message:
             "Unable to create your account.",
         },
-        { status: 400 }
+        {
+          status: 500,
+        }
       )
     }
 
     // ============================================================
-    // NO USER CREATED
+    // CREATE VERIFICATION URL
     // ============================================================
 
-    if (!data.user) {
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ||
+      request.nextUrl.origin
+
+    const verifyLink =
+      `${siteUrl}/auth/verify?token=${encodeURIComponent(
+        verificationToken
+      )}`
+
+    // ============================================================
+    // SEND VERIFICATION EMAIL
+    // ============================================================
+
+    const {
+      error: emailError,
+    } = await resend.emails.send({
+      from:
+        "GlobeDK Elite Academy <admission@globedk.co.zw>",
+
+      to: [email],
+
+      subject:
+        "Verify your GlobeDK Elite Academy account",
+
+      html: `
+        <!DOCTYPE html>
+
+        <html>
+          <head>
+            <meta charset="UTF-8" />
+
+            <meta
+              name="viewport"
+              content="width=device-width, initial-scale=1.0"
+            />
+
+            <title>
+              Verify your GlobeDK account
+            </title>
+          </head>
+
+          <body
+            style="
+              margin: 0;
+              padding: 0;
+              background: #f5f7fb;
+              font-family: Arial, sans-serif;
+            "
+          >
+
+            <div
+              style="
+                max-width: 600px;
+                margin: 40px auto;
+                background: white;
+                border-radius: 12px;
+                padding: 40px;
+              "
+            >
+
+              <h1
+                style="
+                  margin-bottom: 20px;
+                  color: #111827;
+                "
+              >
+                Welcome to GlobeDK Elite Academy
+              </h1>
+
+              <p
+                style="
+                  color: #4b5563;
+                  line-height: 1.6;
+                "
+              >
+                Hello ${escapeHtml(firstName)},
+              </p>
+
+              <p
+                style="
+                  color: #4b5563;
+                  line-height: 1.6;
+                "
+              >
+                Thank you for creating your
+                GlobeDK Elite Academy account.
+              </p>
+
+              <p
+                style="
+                  color: #4b5563;
+                  line-height: 1.6;
+                "
+              >
+                Please verify your email address
+                by clicking the button below.
+              </p>
+
+              <div
+                style="
+                  margin: 30px 0;
+                "
+              >
+
+                <a
+                  href="${verifyLink}"
+                  style="
+                    display: inline-block;
+                    padding: 14px 24px;
+                    background: #2563eb;
+                    color: white;
+                    text-decoration: none;
+                    border-radius: 8px;
+                    font-weight: bold;
+                  "
+                >
+                  Verify My Account
+                </a>
+
+              </div>
+
+              <p
+                style="
+                  color: #6b7280;
+                  font-size: 14px;
+                  line-height: 1.6;
+                "
+              >
+                This verification link will expire
+                in 24 hours.
+              </p>
+
+              <p
+                style="
+                  color: #6b7280;
+                  font-size: 13px;
+                  line-height: 1.6;
+                "
+              >
+                If you did not create this account,
+                you can safely ignore this email.
+              </p>
+
+              <hr
+                style="
+                  border: none;
+                  border-top: 1px solid #e5e7eb;
+                  margin: 30px 0;
+                "
+              />
+
+              <p
+                style="
+                  color: #9ca3af;
+                  font-size: 12px;
+                "
+              >
+                © ${new Date().getFullYear()}
+                GlobeDK Elite Academy
+              </p>
+
+            </div>
+
+          </body>
+        </html>
+      `,
+    })
+
+    // ============================================================
+    // EMAIL ERROR
+    // ============================================================
+
+    if (emailError) {
+      console.error(
+        "Resend email error:",
+        emailError
+      )
+
+      // Remove the account because
+      // verification email was not sent.
+
+      await supabaseAdmin
+        .from("users")
+        .delete()
+        .eq("id", user.id)
+
       return NextResponse.json(
         {
           success: false,
           message:
-            "The account could not be created.",
+            "Your account could not be completed because the verification email could not be sent. Please try again.",
         },
-        { status: 400 }
-      )
-    }
-
-    // ============================================================
-    // EMAIL CONFIRMATION REQUIRED
-    // ============================================================
-
-    if (!data.session) {
-      return NextResponse.json(
         {
-          success: true,
-          requiresEmailConfirmation: true,
-          message:
-            "Your account has been created successfully. Please check your email and confirm your account before signing in.",
-        },
-        { status: 201 }
+          status: 500,
+        }
       )
     }
 
     // ============================================================
-    // EMAIL CONFIRMATION DISABLED
+    // SUCCESS
     // ============================================================
 
     return NextResponse.json(
       {
         success: true,
-        requiresEmailConfirmation: false,
+
+        requiresEmailConfirmation:
+          true,
+
         message:
-          "Your account has been created successfully.",
+          "Your account has been created successfully. Please check your email and verify your account before signing in.",
+
         user: {
-          id: data.user.id,
-          email: data.user.email,
+          id: user.id,
+          email: user.email,
+          firstName:
+            user.first_name,
+          lastName:
+            user.last_name,
         },
       },
-      { status: 201 }
+      {
+        status: 201,
+      }
     )
+
   } catch (error) {
+
     console.error(
       "Unexpected signup API error:",
       error
@@ -223,7 +501,24 @@ export async function POST(request: NextRequest) {
         message:
           "Something went wrong while creating your account. Please try again.",
       },
-      { status: 500 }
+      {
+        status: 500,
+      }
     )
   }
+}
+
+// ============================================================
+// ESCAPE HTML
+// ============================================================
+
+function escapeHtml(
+  value: string
+) {
+  return value
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;")
 }
