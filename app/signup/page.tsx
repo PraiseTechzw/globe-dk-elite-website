@@ -3,6 +3,8 @@
 import Image from "next/image"
 import Link from "next/link"
 import { useState } from "react"
+import { useRouter } from "next/navigation"
+
 import {
   ArrowRight,
   Check,
@@ -14,12 +16,12 @@ import {
   Phone,
   School,
   ShieldCheck,
-  Sparkles,
   User,
   Users,
 } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
+
 import {
   Card,
   CardContent,
@@ -27,16 +29,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card"
+
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
 
+import { createClient } from "@/lib/supabaseClient"
+
 export default function SignupPage() {
-  const [showPassword, setShowPassword] = useState(false)
+  const router = useRouter()
+  const supabase = createClient()
+
+  const [showPassword, setShowPassword] =
+    useState(false)
+
   const [showConfirmPassword, setShowConfirmPassword] =
     useState(false)
 
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] =
+    useState(false)
+
+  const [errorMessage, setErrorMessage] =
+    useState("")
+
+  const [successMessage, setSuccessMessage] =
+    useState("")
 
   const [form, setForm] = useState({
     firstName: "",
@@ -51,6 +68,10 @@ export default function SignupPage() {
     guardianPhone: "",
   })
 
+  // ============================================================
+  // UPDATE FORM
+  // ============================================================
+
   const updateField = (
     field: keyof typeof form,
     value: string
@@ -61,54 +82,260 @@ export default function SignupPage() {
     }))
   }
 
-  const handleSignup = async (e: React.FormEvent) => {
+  // ============================================================
+  // EMAIL + PASSWORD SIGNUP
+  // ============================================================
+
+  const handleSignup = async (
+    e: React.FormEvent<HTMLFormElement>
+  ) => {
     e.preventDefault()
 
+    setErrorMessage("")
+    setSuccessMessage("")
+
+    // ==========================================================
+    // VALIDATION
+    // ==========================================================
+
     if (form.password !== form.confirmPassword) {
-      alert("Passwords do not match.")
+      setErrorMessage(
+        "Passwords do not match."
+      )
       return
     }
 
-    setLoading(true)
+    if (form.password.length < 8) {
+      setErrorMessage(
+        "Password must be at least 8 characters long."
+      )
+      return
+    }
 
-    // Supabase signup will be connected here
-    console.log(form)
+    if (!form.firstName.trim()) {
+      setErrorMessage(
+        "Please enter your first name."
+      )
+      return
+    }
 
-    setLoading(false)
+    if (!form.lastName.trim()) {
+      setErrorMessage(
+        "Please enter your last name."
+      )
+      return
+    }
+
+    if (!form.email.trim()) {
+      setErrorMessage(
+        "Please enter your email address."
+      )
+      return
+    }
+
+    if (!form.level) {
+      setErrorMessage(
+        "Please select your current level."
+      )
+      return
+    }
+
+    if (!form.school.trim()) {
+      setErrorMessage(
+        "Please enter your school."
+      )
+      return
+    }
+
+    // ==========================================================
+    // API REQUEST
+    // ==========================================================
+
+    try {
+      setLoading(true)
+
+      const response = await fetch(
+        "/api/signup",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify({
+            firstName:
+              form.firstName.trim(),
+
+            lastName:
+              form.lastName.trim(),
+
+            email:
+              form.email.trim().toLowerCase(),
+
+            phone:
+              form.phone.trim(),
+
+            password:
+              form.password,
+
+            level:
+              form.level,
+
+            school:
+              form.school.trim(),
+
+            guardianName:
+              form.guardianName.trim(),
+
+            guardianPhone:
+              form.guardianPhone.trim(),
+          }),
+        }
+      )
+
+      const result = await response.json()
+
+      // ========================================================
+      // API ERROR
+      // ========================================================
+
+      if (!response.ok || !result.success) {
+        setErrorMessage(
+          result.message ||
+            "Unable to create your account."
+        )
+
+        return
+      }
+
+      // ========================================================
+      // EMAIL CONFIRMATION REQUIRED
+      // ========================================================
+
+      if (
+        result.requiresEmailConfirmation
+      ) {
+        setSuccessMessage(
+          result.message ||
+            "Your account has been created. Please check your email and confirm your account before signing in."
+        )
+
+        setForm((previous) => ({
+          ...previous,
+          password: "",
+          confirmPassword: "",
+        }))
+
+        return
+      }
+
+      // ========================================================
+      // ACCOUNT CREATED + SESSION AVAILABLE
+      // ========================================================
+
+      router.push(
+        "/student/dashboard"
+      )
+
+      router.refresh()
+    } catch (error) {
+      console.error(
+        "Signup request error:",
+        error
+      )
+
+      setErrorMessage(
+        "Something went wrong while creating your account. Please try again."
+      )
+    } finally {
+      setLoading(false)
+    }
   }
 
+  // ============================================================
+  // GOOGLE SIGNUP
+  // ============================================================
+
   const handleGoogleSignup = async () => {
-    // Supabase Google OAuth will be connected here
-    console.log("Google signup")
+    setErrorMessage("")
+    setSuccessMessage("")
+
+    try {
+      setLoading(true)
+
+      const { error } =
+        await supabase.auth.signInWithOAuth({
+          provider: "google",
+
+          options: {
+            redirectTo:
+              `${window.location.origin}/auth/callback?next=/student/dashboard`,
+          },
+        })
+
+      if (error) {
+        console.error(
+          "Google signup error:",
+          error
+        )
+
+        setErrorMessage(
+          error.message ||
+            "Unable to continue with Google."
+        )
+
+        setLoading(false)
+      }
+    } catch (error) {
+      console.error(
+        "Unexpected Google signup error:",
+        error
+      )
+
+      setErrorMessage(
+        "Unable to connect to Google. Please try again."
+      )
+
+      setLoading(false)
+    }
   }
 
   return (
     <main className="min-h-screen bg-muted/30">
-
       <div className="grid min-h-screen lg:grid-cols-2">
 
-        {/* LEFT BRANDING */}
+        {/* ====================================================
+            LEFT BRANDING
+        ==================================================== */}
+
         <div className="relative hidden overflow-hidden bg-primary lg:flex">
 
           <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/70" />
 
           <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-16">
 
+            {/* LOGO */}
+
             <Link
               href="/"
               className="flex items-center gap-3 text-primary-foreground"
             >
               <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white">
+
                 <Image
                   src="/Logo.png"
                   alt="GlobeDK Elite Academy"
                   width={48}
                   height={48}
                   className="object-contain"
+                  priority
                 />
+
               </div>
 
               <div>
+
                 <p className="text-lg font-bold">
                   GlobeDK Elite Academy
                 </p>
@@ -116,13 +343,18 @@ export default function SignupPage() {
                 <p className="text-xs opacity-80">
                   Excellence Through Education
                 </p>
+
               </div>
             </Link>
+
+            {/* HERO */}
 
             <div className="max-w-xl text-primary-foreground">
 
               <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+
                 <GraduationCap className="h-7 w-7" />
+
               </div>
 
               <h1 className="text-4xl font-bold tracking-tight xl:text-5xl">
@@ -132,9 +364,11 @@ export default function SignupPage() {
               </h1>
 
               <p className="mt-6 text-lg leading-8 opacity-85">
-                Create your GlobeDK Elite Academy account and gain
-                access to tools designed to make examination
-                preparation more intelligent and effective.
+                Create your GlobeDK Elite Academy
+                account and gain access to tools
+                designed to make examination
+                preparation more intelligent and
+                effective.
               </p>
 
               <div className="mt-8 space-y-4">
@@ -145,18 +379,24 @@ export default function SignupPage() {
                   "Personalised mock examinations",
                   "Progress and performance tracking",
                 ].map((item) => (
+
                   <div
                     key={item}
                     className="flex items-center gap-3"
                   >
+
                     <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
+
                       <Check className="h-4 w-4" />
+
                     </div>
 
                     <span className="text-sm">
                       {item}
                     </span>
+
                   </div>
+
                 ))}
 
               </div>
@@ -168,31 +408,38 @@ export default function SignupPage() {
             </p>
 
           </div>
-
         </div>
 
-        {/* FORM */}
+        {/* ====================================================
+            FORM
+        ==================================================== */}
+
         <div className="flex items-center justify-center p-5 sm:p-8">
 
           <div className="w-full max-w-xl">
 
-            {/* Mobile branding */}
+            {/* MOBILE BRANDING */}
+
             <div className="mb-8 flex justify-center lg:hidden">
 
               <Link
                 href="/"
                 className="flex items-center gap-3"
               >
+
                 <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl">
+
                   <Image
                     src="/Logo.png"
                     alt="GlobeDK Elite Academy"
                     width={48}
                     height={48}
                   />
+
                 </div>
 
                 <div>
+
                   <p className="font-bold">
                     GlobeDK Elite Academy
                   </p>
@@ -200,7 +447,9 @@ export default function SignupPage() {
                   <p className="text-xs text-muted-foreground">
                     Excellence Through Education
                   </p>
+
                 </div>
+
               </Link>
 
             </div>
@@ -210,7 +459,9 @@ export default function SignupPage() {
               <CardHeader>
 
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+
                   <User className="h-5 w-5 text-primary" />
+
                 </div>
 
                 <CardTitle className="mt-3 text-2xl">
@@ -218,44 +469,76 @@ export default function SignupPage() {
                 </CardTitle>
 
                 <CardDescription>
-                  Tell us a little about yourself so we can
-                  personalise your learning experience.
+                  Tell us a little about yourself so
+                  we can personalise your learning
+                  experience.
                 </CardDescription>
 
               </CardHeader>
 
               <CardContent>
 
-                {/* Google */}
+                {/* ERROR */}
+
+                {errorMessage && (
+
+                  <div className="mb-5 rounded-lg border border-destructive/30 bg-destructive/10 p-4 text-sm text-destructive">
+                    {errorMessage}
+                  </div>
+
+                )}
+
+                {/* SUCCESS */}
+
+                {successMessage && (
+
+                  <div className="mb-5 rounded-lg border border-green-500/30 bg-green-500/10 p-4 text-sm text-green-700 dark:text-green-400">
+                    {successMessage}
+                  </div>
+
+                )}
+
+                {/* GOOGLE */}
+
                 <Button
                   type="button"
                   variant="outline"
                   className="h-11 w-full"
                   onClick={handleGoogleSignup}
+                  disabled={loading}
                 >
+
                   <svg
                     className="mr-2 h-4 w-4"
                     viewBox="0 0 24 24"
                   >
+
                     <path
                       fill="currentColor"
                       d="M21.35 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.94v2.45h3.14c1.84-1.7 2.92-4.2 2.92-7.42Z"
                     />
+
                     <path
                       fill="currentColor"
                       d="M12 21.5c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.93-3.31.93-2.55 0-4.71-1.72-5.49-4.04H3.26v2.53A9.74 9.74 0 0 0 12 21.5Z"
                     />
+
                     <path
                       fill="currentColor"
                       d="M6.51 13.58A5.86 5.86 0 0 1 6.2 12c0-.55.1-1.08.31-1.58V7.89H3.26A9.74 9.74 0 0 0 2.25 12c0 1.57.38 3.06 1.01 4.11l3.25-2.53Z"
                     />
+
                     <path
                       fill="currentColor"
                       d="M12 6.38c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.39 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.74 5.39l3.25 2.53C7.29 8.1 9.45 6.38 12 6.38Z"
                     />
+
                   </svg>
 
-                  Sign up with Google
+                  {loading
+                    ? "Please wait..."
+                    : "Sign up with Google"}
+
                 </Button>
 
                 <div className="my-6 flex items-center gap-3">
@@ -270,12 +553,15 @@ export default function SignupPage() {
 
                 </div>
 
+                {/* SIGNUP FORM */}
+
                 <form
                   onSubmit={handleSignup}
                   className="space-y-6"
                 >
 
-                  {/* Personal Information */}
+                  {/* PERSONAL */}
+
                   <div>
 
                     <h3 className="mb-3 text-sm font-semibold">
@@ -330,7 +616,8 @@ export default function SignupPage() {
 
                   </div>
 
-                  {/* Contact */}
+                  {/* CONTACT */}
+
                   <div>
 
                     <h3 className="mb-3 text-sm font-semibold">
@@ -400,7 +687,8 @@ export default function SignupPage() {
 
                   </div>
 
-                  {/* Academic Information */}
+                  {/* ACADEMIC */}
+
                   <div>
 
                     <h3 className="mb-3 text-sm font-semibold">
@@ -431,6 +719,7 @@ export default function SignupPage() {
                             required
                             className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm"
                           >
+
                             <option value="">
                               Select level
                             </option>
@@ -501,7 +790,8 @@ export default function SignupPage() {
 
                   </div>
 
-                  {/* Guardian */}
+                  {/* GUARDIAN */}
+
                   <div>
 
                     <h3 className="mb-3 text-sm font-semibold">
@@ -562,7 +852,8 @@ export default function SignupPage() {
 
                   </div>
 
-                  {/* Password */}
+                  {/* PASSWORD */}
+
                   <div>
 
                     <h3 className="mb-3 text-sm font-semibold">
@@ -610,11 +901,13 @@ export default function SignupPage() {
                             }
                             className="absolute right-3 top-2.5 text-muted-foreground"
                           >
+
                             {showPassword ? (
                               <EyeOff className="h-4 w-4" />
                             ) : (
                               <Eye className="h-4 w-4" />
                             )}
+
                           </button>
 
                         </div>
@@ -658,11 +951,13 @@ export default function SignupPage() {
                             }
                             className="absolute right-3 top-2.5 text-muted-foreground"
                           >
+
                             {showConfirmPassword ? (
                               <EyeOff className="h-4 w-4" />
                             ) : (
                               <Eye className="h-4 w-4" />
                             )}
+
                           </button>
 
                         </div>
@@ -673,25 +968,30 @@ export default function SignupPage() {
 
                   </div>
 
-                  {/* Terms */}
+                  {/* SECURITY */}
+
                   <div className="flex items-start gap-3 rounded-lg border bg-muted/30 p-4">
 
                     <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
 
                     <p className="text-xs leading-5 text-muted-foreground">
-                      Your account information is securely stored
-                      and is used to provide your GlobeDK learning
-                      experience. By creating an account, you agree
-                      to the academy's terms and privacy policy.
+                      Your account information is securely
+                      stored and is used to provide your
+                      GlobeDK learning experience. By
+                      creating an account, you agree to the
+                      academy's terms and privacy policy.
                     </p>
 
                   </div>
+
+                  {/* SUBMIT */}
 
                   <Button
                     type="submit"
                     className="h-11 w-full"
                     disabled={loading}
                   >
+
                     {loading
                       ? "Creating account..."
                       : "Create student account"}
@@ -699,18 +999,22 @@ export default function SignupPage() {
                     {!loading && (
                       <ArrowRight className="ml-2 h-4 w-4" />
                     )}
+
                   </Button>
 
                 </form>
 
                 <p className="mt-6 text-center text-sm text-muted-foreground">
+
                   Already have an account?{" "}
+
                   <Link
                     href="/login"
                     className="font-semibold text-primary hover:underline"
                   >
                     Sign in
                   </Link>
+
                 </p>
 
               </CardContent>
