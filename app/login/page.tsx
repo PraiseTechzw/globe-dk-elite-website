@@ -51,125 +51,200 @@ export default function LoginPage() {
   // ============================================================
 
   const handleLogin = async (
-    e: React.FormEvent<HTMLFormElement>
-  ) => {
-    e.preventDefault()
+  e: React.FormEvent<HTMLFormElement>
+) => {
+  e.preventDefault()
 
-    setErrorMessage("")
-    setSuccessMessage("")
+  setErrorMessage("")
+  setSuccessMessage("")
 
-    // ----------------------------------------------------------
-    // VALIDATION
-    // ----------------------------------------------------------
+  // ----------------------------------------------------------
+  // VALIDATION
+  // ----------------------------------------------------------
 
-    if (!email.trim()) {
-      setErrorMessage("Please enter your email address.")
+  if (!email.trim()) {
+    setErrorMessage("Please enter your email address.")
+    return
+  }
+
+  if (!password) {
+    setErrorMessage("Please enter your password.")
+    return
+  }
+
+  try {
+    setLoading(true)
+
+    // --------------------------------------------------------
+    // CALL EMAIL LOGIN API
+    // --------------------------------------------------------
+
+    const response = await fetch("/api/login", {
+      method: "POST",
+
+      headers: {
+        "Content-Type": "application/json",
+      },
+
+      body: JSON.stringify({
+        email: email.trim().toLowerCase(),
+        password,
+      }),
+    })
+
+    // --------------------------------------------------------
+    // READ API RESPONSE
+    // --------------------------------------------------------
+
+    const result = await response.json()
+
+    if (!response.ok || !result.success) {
+      setErrorMessage(
+        result.message || "Unable to sign in."
+      )
+
       return
     }
 
-    if (!password) {
-      setErrorMessage("Please enter your password.")
-      return
-    }
+    // --------------------------------------------------------
+    // ESTABLISH SUPABASE SESSION IN BROWSER
+    // --------------------------------------------------------
 
-    try {
-      setLoading(true)
+    if (
+      result.session?.access_token &&
+      result.session?.refresh_token
+    ) {
+      const {
+        error: sessionError,
+      } = await supabase.auth.setSession({
+        access_token:
+          result.session.access_token,
 
-      // --------------------------------------------------------
-      // CALL EMAIL LOGIN API
-      // --------------------------------------------------------
-
-      const response = await fetch("/api/login", {
-        method: "POST",
-
-        headers: {
-          "Content-Type": "application/json",
-        },
-
-        body: JSON.stringify({
-          email: email.trim().toLowerCase(),
-          password,
-        }),
+        refresh_token:
+          result.session.refresh_token,
       })
 
-      // --------------------------------------------------------
-      // READ API RESPONSE
-      // --------------------------------------------------------
+      if (sessionError) {
+        console.error(
+          "Supabase session error:",
+          sessionError
+        )
 
-      const result = await response.json()
-
-      if (!response.ok || !result.success) {
         setErrorMessage(
-          result.message || "Unable to sign in."
+          "Login succeeded, but we could not establish your session. Please try again."
         )
 
         return
       }
+    }
 
-      // --------------------------------------------------------
-      // ESTABLISH SUPABASE SESSION IN BROWSER
-      // --------------------------------------------------------
+    // --------------------------------------------------------
+    // GET CURRENT AUTHENTICATED USER
+    // --------------------------------------------------------
 
-      if (
-        result.session?.access_token &&
-        result.session?.refresh_token
-      ) {
-        const {
-          error: sessionError,
-        } = await supabase.auth.setSession({
-          access_token:
-            result.session.access_token,
+    const {
+      data: {
+        user,
+      },
+      error: userError,
+    } = await supabase.auth.getUser()
 
-          refresh_token:
-            result.session.refresh_token,
-        })
-
-        if (sessionError) {
-          console.error(
-            "Supabase session error:",
-            sessionError
-          )
-
-          setErrorMessage(
-            "Login succeeded, but we could not establish your session. Please try again."
-          )
-
-          return
-        }
-      }
-
-      // --------------------------------------------------------
-      // SUCCESS
-      // --------------------------------------------------------
-
-      setSuccessMessage(
-        "Login successful. Redirecting..."
-      )
-
-      // --------------------------------------------------------
-      // ROLE-BASED REDIRECT
-      // --------------------------------------------------------
-
-      const redirectTo =
-        result.redirectTo ||
-        "/student/dashboard"
-
-      router.replace(redirectTo)
-
-      router.refresh()
-    } catch (error) {
+    if (userError || !user) {
       console.error(
-        "Unexpected email login error:",
-        error
+        "Unable to get authenticated user:",
+        userError
       )
 
       setErrorMessage(
-        "Unable to connect to the server. Please try again."
+        "Login succeeded, but we could not determine your account role."
       )
-    } finally {
-      setLoading(false)
+
+      return
     }
+
+    // --------------------------------------------------------
+    // DETERMINE USER ROLE
+    // --------------------------------------------------------
+    //
+    // We check:
+    //
+    // 1. API response role
+    // 2. API response user metadata
+    // 3. Supabase authenticated user's metadata
+    //
+    // This makes the redirect more reliable.
+    // --------------------------------------------------------
+
+    const role =
+      result.role ||
+      result.user?.role ||
+      result.user?.user_metadata?.role ||
+      user.user_metadata?.role
+
+    console.log("Authenticated user:", user)
+    console.log("Detected role:", role)
+
+    // --------------------------------------------------------
+    // ROLE-BASED REDIRECT
+    // --------------------------------------------------------
+
+    let redirectTo: string
+
+    switch (String(role).toLowerCase()) {
+      case "admin":
+        redirectTo = "/admin/dashboard"
+        break
+
+      case "tutor":
+        redirectTo = "/tutor/dashboard"
+        break
+
+      case "student":
+        redirectTo = "/student/dashboard"
+        break
+
+      default:
+        console.error(
+          "Unknown or missing user role:",
+          role
+        )
+
+        setErrorMessage(
+          "Your account role could not be determined. Please contact the administrator."
+        )
+
+        return
+    }
+
+    // --------------------------------------------------------
+    // SUCCESS
+    // --------------------------------------------------------
+
+    setSuccessMessage(
+      "Login successful. Redirecting..."
+    )
+
+    // --------------------------------------------------------
+    // REDIRECT
+    // --------------------------------------------------------
+
+    router.replace(redirectTo)
+
+    router.refresh()
+
+  } catch (error) {
+    console.error(
+      "Unexpected email login error:",
+      error
+    )
+
+    setErrorMessage(
+      "Unable to connect to the server. Please try again."
+    )
+  } finally {
+    setLoading(false)
   }
+}
 
   // ============================================================
   // GOOGLE LOGIN
