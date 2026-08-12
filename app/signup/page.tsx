@@ -1,320 +1,727 @@
-"use client";
+"use client"
 
-import { useState, useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { ExtraLessonForm, DocumentType } from "@/types";
-import { supabase } from "@/lib/supabaseClient";
+import Image from "next/image"
+import Link from "next/link"
+import { useState } from "react"
+import {
+  ArrowRight,
+  Check,
+  Eye,
+  EyeOff,
+  GraduationCap,
+  LockKeyhole,
+  Mail,
+  Phone,
+  School,
+  ShieldCheck,
+  Sparkles,
+  User,
+  Users,
+} from "lucide-react"
 
-export default function ExtraLessonApplication() {
-  const [formData, setFormData] = useState<ExtraLessonForm>({
-    level: "",
+import { Button } from "@/components/ui/button"
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Separator } from "@/components/ui/separator"
+
+export default function SignupPage() {
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] =
+    useState(false)
+
+  const [loading, setLoading] = useState(false)
+
+  const [form, setForm] = useState({
     firstName: "",
     lastName: "",
-    gender: "",
-    dob: "",
-    subjects: [],
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+    level: "",
+    school: "",
     guardianName: "",
     guardianPhone: "",
-    guardianEmail: "",
-    relationship: "",
-    documents: [],
-  });
+  })
 
-  const oLevelSubjects = ["English", "Computer Science", "Maths", "Geography"];
-  const aLevelSubjects = ["Computer Science", "Pure Maths", "Geography"];
-  const relationships = ["Parent", "Guardian", "Other"];
-
-  const [availableSubjects, setAvailableSubjects] = useState<string[]>([]);
-
-  // Update subjects when level changes
-  useEffect(() => {
-    if (formData.level === "O-Level") setAvailableSubjects(oLevelSubjects);
-    else if (formData.level === "A-Level") setAvailableSubjects(aLevelSubjects);
-    else setAvailableSubjects([]);
-
-    setFormData((prev) => ({ ...prev, subjects: [] }));
-  }, [formData.level]);
-
-  const handleChange = (field: keyof ExtraLessonForm, value: any) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-  };
-
-  const handleSubjectsChange = (subject: string) => {
-    handleChange(
-      "subjects",
-      formData.subjects.includes(subject)
-        ? formData.subjects.filter((s) => s !== subject)
-        : [...formData.subjects, subject]
-    );
-  };
-
-  const handleDocumentChange = (index: number, value: File | null, name: string) => {
-    const docs = [...formData.documents];
-    docs[index] = { name, file: value };
-    handleChange("documents", docs);
-  };
-
-  const addDocument = () => {
-    handleChange("documents", [...formData.documents, { name: "", file: null }]);
-  };
-const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-
-  // Basic validation
-  if (!formData.firstName || !formData.lastName || !formData.level || formData.subjects.length === 0) {
-    alert("Please fill in all required fields and select subjects.");
-    return;
+  const updateField = (
+    field: keyof typeof form,
+    value: string
+  ) => {
+    setForm((previous) => ({
+      ...previous,
+      [field]: value,
+    }))
   }
 
-  try {
-    // Upload documents to Supabase Storage
-    const uploadedDocs: DocumentType[] = [];
-    for (const doc of formData.documents) {
-      if (doc.file) {
-        const fileExt = doc.file.name.split(".").pop();
-        const fileName = `${Date.now()}_${doc.name}.${fileExt}`;
-        const { data, error } = await supabase.storage
-          .from("extra-lesson-documents")
-          .upload(fileName, doc.file);
-        if (error) throw error;
+  const handleSignup = async (e: React.FormEvent) => {
+    e.preventDefault()
 
-        const { publicURL } = supabase.storage
-          .from("extra-lesson-documents")
-          .getPublicUrl(data.path);
-
-        uploadedDocs.push({ name: doc.name, url: publicURL });
-      } else if (doc.name) {
-        uploadedDocs.push({ name: doc.name });
-      }
+    if (form.password !== form.confirmPassword) {
+      alert("Passwords do not match.")
+      return
     }
 
-    // Insert into Supabase table
-    const { error: dbError } = await supabase.from("extra_lesson_applications").insert([
-      {
-        level: formData.level,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        gender: formData.gender,
-        dob: formData.dob,
-        subjects: formData.subjects,
-        guardian_name: formData.guardianName,
-        guardian_phone: formData.guardianPhone,
-        guardian_email: formData.guardianEmail,
-        relationship: formData.relationship,
-        documents: uploadedDocs,
-      },
-    ]);
+    setLoading(true)
 
-    if (dbError) throw dbError;
+    // Supabase signup will be connected here
+    console.log(form)
 
-    // Call email API
-    const res = await fetch("/api/send-email", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        level: formData.level,
-        gender: formData.gender,
-        dob: formData.dob,
-        subjects: formData.subjects,
-        guardianName: formData.guardianName,
-        guardianPhone: formData.guardianPhone,
-        guardianEmail: formData.guardianEmail,
-        relationship: formData.relationship,
-      }),
-    });
-
-    const data = await res.json();
-
-    if (!res.ok || !data.success) {
-      throw new Error(data.error || "Failed to send email");
-    }
-
-    alert("Application submitted successfully!");
-
-    // Reset form
-    setFormData({
-      level: "",
-      firstName: "",
-      lastName: "",
-      gender: "",
-      dob: "",
-      subjects: [],
-      guardianName: "",
-      guardianPhone: "",
-      guardianEmail: "",
-      relationship: "",
-      documents: [],
-    });
-  } catch (error: any) {
-    console.error("Form submission failed:", error);
-    alert("Error submitting application: " + error.message);
+    setLoading(false)
   }
-};
 
-
-
+  const handleGoogleSignup = async () => {
+    // Supabase Google OAuth will be connected here
+    console.log("Google signup")
+  }
 
   return (
-    <div className="min-h-screen bg-muted py-12">
-      <div className="max-w-3xl mx-auto bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-xl md:text-2xl font-bold text-center mb-8">
-          Extra Lesson Application Form
-        </h1>
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Level Selection */}
-          <div>
-            <label className="block font-medium mb-1">Select Level</label>
-            <select
-              className="w-full border rounded px-3 py-2"
-              value={formData.level}
-              onChange={(e) => handleChange("level", e.target.value)}
+    <main className="min-h-screen bg-muted/30">
+
+      <div className="grid min-h-screen lg:grid-cols-2">
+
+        {/* LEFT BRANDING */}
+        <div className="relative hidden overflow-hidden bg-primary lg:flex">
+
+          <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary/90 to-primary/70" />
+
+          <div className="relative z-10 flex w-full flex-col justify-between p-10 xl:p-16">
+
+            <Link
+              href="/"
+              className="flex items-center gap-3 text-primary-foreground"
             >
-              <option value="">Select Level</option>
-              <option value="O-Level">O-Level</option>
-              <option value="A-Level">A-Level</option>
-            </select>
+              <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl bg-white">
+                <Image
+                  src="/Logo.png"
+                  alt="GlobeDK Elite Academy"
+                  width={48}
+                  height={48}
+                  className="object-contain"
+                />
+              </div>
+
+              <div>
+                <p className="text-lg font-bold">
+                  GlobeDK Elite Academy
+                </p>
+
+                <p className="text-xs opacity-80">
+                  Excellence Through Education
+                </p>
+              </div>
+            </Link>
+
+            <div className="max-w-xl text-primary-foreground">
+
+              <div className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/10 backdrop-blur">
+                <GraduationCap className="h-7 w-7" />
+              </div>
+
+              <h1 className="text-4xl font-bold tracking-tight xl:text-5xl">
+                Start your
+                <br />
+                learning journey.
+              </h1>
+
+              <p className="mt-6 text-lg leading-8 opacity-85">
+                Create your GlobeDK Elite Academy account and gain
+                access to tools designed to make examination
+                preparation more intelligent and effective.
+              </p>
+
+              <div className="mt-8 space-y-4">
+
+                {[
+                  "AI-powered examination insights",
+                  "Historical examination analysis",
+                  "Personalised mock examinations",
+                  "Progress and performance tracking",
+                ].map((item) => (
+                  <div
+                    key={item}
+                    className="flex items-center gap-3"
+                  >
+                    <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white/10">
+                      <Check className="h-4 w-4" />
+                    </div>
+
+                    <span className="text-sm">
+                      {item}
+                    </span>
+                  </div>
+                ))}
+
+              </div>
+
+            </div>
+
+            <p className="text-xs text-primary-foreground/60">
+              © {new Date().getFullYear()} GlobeDK Elite Academy.
+            </p>
+
           </div>
 
-          {/* Student Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-medium mb-1">First Name</label>
-              <input
-                type="text"
-                className="w-full border rounded px-3 py-2"
-                value={formData.firstName}
-                onChange={(e) => handleChange("firstName", e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Last Name</label>
-              <input
-                type="text"
-                className="w-full border rounded px-3 py-2"
-                value={formData.lastName}
-                onChange={(e) => handleChange("lastName", e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Gender</label>
-              <select
-                className="w-full border rounded px-3 py-2"
-                value={formData.gender}
-                onChange={(e) => handleChange("gender", e.target.value)}
+        </div>
+
+        {/* FORM */}
+        <div className="flex items-center justify-center p-5 sm:p-8">
+
+          <div className="w-full max-w-xl">
+
+            {/* Mobile branding */}
+            <div className="mb-8 flex justify-center lg:hidden">
+
+              <Link
+                href="/"
+                className="flex items-center gap-3"
               >
-                <option value="">Select gender</option>
-                <option value="Male">Male</option>
-                <option value="Female">Female</option>
-              </select>
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Date of Birth</label>
-              <input
-                type="date"
-                className="w-full border rounded px-3 py-2"
-                value={formData.dob}
-                onChange={(e) => handleChange("dob", e.target.value)}
-              />
-            </div>
-          </div>
+                <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-xl">
+                  <Image
+                    src="/Logo.png"
+                    alt="GlobeDK Elite Academy"
+                    width={48}
+                    height={48}
+                  />
+                </div>
 
-          {/* Subjects Selection */}
-          {availableSubjects.length > 0 && (
-            <div>
-              <label className="block font-medium mb-2">Select Subjects of Interest</label>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-                {availableSubjects.map((subject) => (
-                  <label key={subject} className="inline-flex items-center space-x-2">
-                    <input
-                      type="checkbox"
-                      checked={formData.subjects.includes(subject)}
-                      onChange={() => handleSubjectsChange(subject)}
-                      className="w-4 h-4"
+                <div>
+                  <p className="font-bold">
+                    GlobeDK Elite Academy
+                  </p>
+
+                  <p className="text-xs text-muted-foreground">
+                    Excellence Through Education
+                  </p>
+                </div>
+              </Link>
+
+            </div>
+
+            <Card>
+
+              <CardHeader>
+
+                <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10">
+                  <User className="h-5 w-5 text-primary" />
+                </div>
+
+                <CardTitle className="mt-3 text-2xl">
+                  Create your account
+                </CardTitle>
+
+                <CardDescription>
+                  Tell us a little about yourself so we can
+                  personalise your learning experience.
+                </CardDescription>
+
+              </CardHeader>
+
+              <CardContent>
+
+                {/* Google */}
+                <Button
+                  type="button"
+                  variant="outline"
+                  className="h-11 w-full"
+                  onClick={handleGoogleSignup}
+                >
+                  <svg
+                    className="mr-2 h-4 w-4"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      fill="currentColor"
+                      d="M21.35 12.27c0-.79-.07-1.55-.2-2.27H12v4.3h5.23a4.47 4.47 0 0 1-1.94 2.94v2.45h3.14c1.84-1.7 2.92-4.2 2.92-7.42Z"
                     />
-                    <span>{subject}</span>
-                  </label>
-                ))}
-              </div>
-            </div>
-          )}
+                    <path
+                      fill="currentColor"
+                      d="M12 21.5c2.63 0 4.84-.87 6.45-2.36l-3.14-2.45c-.87.58-1.98.93-3.31.93-2.55 0-4.71-1.72-5.49-4.04H3.26v2.53A9.74 9.74 0 0 0 12 21.5Z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M6.51 13.58A5.86 5.86 0 0 1 6.2 12c0-.55.1-1.08.31-1.58V7.89H3.26A9.74 9.74 0 0 0 2.25 12c0 1.57.38 3.06 1.01 4.11l3.25-2.53Z"
+                    />
+                    <path
+                      fill="currentColor"
+                      d="M12 6.38c1.43 0 2.71.49 3.72 1.45l2.79-2.79C16.83 3.39 14.63 2.5 12 2.5a9.74 9.74 0 0 0-8.74 5.39l3.25 2.53C7.29 8.1 9.45 6.38 12 6.38Z"
+                    />
+                  </svg>
 
-          {/* Guardian Info */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block font-medium mb-1">Guardian Full Name</label>
-              <input
-                type="text"
-                className="w-full border rounded px-3 py-2"
-                value={formData.guardianName}
-                onChange={(e) => handleChange("guardianName", e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Guardian Phone Number</label>
-              <input
-                type="text"
-                className="w-full border rounded px-3 py-2"
-                value={formData.guardianPhone}
-                onChange={(e) => handleChange("guardianPhone", e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Guardian Email</label>
-              <input
-                type="email"
-                className="w-full border rounded px-3 py-2"
-                value={formData.guardianEmail}
-                onChange={(e) => handleChange("guardianEmail", e.target.value)}
-              />
-            </div>
-            <div>
-              <label className="block font-medium mb-1">Relationship with Student</label>
-              <select
-                className="w-full border rounded px-3 py-2"
-                value={formData.relationship}
-                onChange={(e) => handleChange("relationship", e.target.value)}
-              >
-                <option value="">Select relationship</option>
-                {relationships.map((r) => (
-                  <option key={r} value={r}>{r}</option>
-                ))}
-              </select>
-            </div>
+                  Sign up with Google
+                </Button>
+
+                <div className="my-6 flex items-center gap-3">
+
+                  <Separator className="flex-1" />
+
+                  <span className="text-xs text-muted-foreground">
+                    OR CREATE WITH EMAIL
+                  </span>
+
+                  <Separator className="flex-1" />
+
+                </div>
+
+                <form
+                  onSubmit={handleSignup}
+                  className="space-y-6"
+                >
+
+                  {/* Personal Information */}
+                  <div>
+
+                    <h3 className="mb-3 text-sm font-semibold">
+                      Personal information
+                    </h3>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="firstName">
+                          First name
+                        </Label>
+
+                        <Input
+                          id="firstName"
+                          placeholder="John"
+                          value={form.firstName}
+                          onChange={(e) =>
+                            updateField(
+                              "firstName",
+                              e.target.value
+                            )
+                          }
+                          required
+                        />
+
+                      </div>
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="lastName">
+                          Last name
+                        </Label>
+
+                        <Input
+                          id="lastName"
+                          placeholder="Daka"
+                          value={form.lastName}
+                          onChange={(e) =>
+                            updateField(
+                              "lastName",
+                              e.target.value
+                            )
+                          }
+                          required
+                        />
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* Contact */}
+                  <div>
+
+                    <h3 className="mb-3 text-sm font-semibold">
+                      Contact information
+                    </h3>
+
+                    <div className="space-y-4">
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="email">
+                          Email address
+                        </Label>
+
+                        <div className="relative">
+
+                          <Mail className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                          <Input
+                            id="email"
+                            type="email"
+                            placeholder="you@example.com"
+                            className="pl-10"
+                            value={form.email}
+                            onChange={(e) =>
+                              updateField(
+                                "email",
+                                e.target.value
+                              )
+                            }
+                            required
+                          />
+
+                        </div>
+
+                      </div>
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="phone">
+                          Phone number
+                        </Label>
+
+                        <div className="relative">
+
+                          <Phone className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                          <Input
+                            id="phone"
+                            type="tel"
+                            placeholder="+263 7X XXX XXXX"
+                            className="pl-10"
+                            value={form.phone}
+                            onChange={(e) =>
+                              updateField(
+                                "phone",
+                                e.target.value
+                              )
+                            }
+                          />
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* Academic Information */}
+                  <div>
+
+                    <h3 className="mb-3 text-sm font-semibold">
+                      Academic information
+                    </h3>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="level">
+                          Current level / Form
+                        </Label>
+
+                        <div className="relative">
+
+                          <GraduationCap className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                          <select
+                            id="level"
+                            value={form.level}
+                            onChange={(e) =>
+                              updateField(
+                                "level",
+                                e.target.value
+                              )
+                            }
+                            required
+                            className="h-10 w-full rounded-md border border-input bg-background pl-10 pr-3 text-sm"
+                          >
+                            <option value="">
+                              Select level
+                            </option>
+
+                            <option value="Form 1">
+                              Form 1
+                            </option>
+
+                            <option value="Form 2">
+                              Form 2
+                            </option>
+
+                            <option value="Form 3">
+                              Form 3
+                            </option>
+
+                            <option value="Form 4">
+                              Form 4
+                            </option>
+
+                            <option value="Lower 6">
+                              Lower 6
+                            </option>
+
+                            <option value="Upper 6">
+                              Upper 6
+                            </option>
+
+                            <option value="Other">
+                              Other
+                            </option>
+
+                          </select>
+
+                        </div>
+
+                      </div>
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="school">
+                          School
+                        </Label>
+
+                        <div className="relative">
+
+                          <School className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                          <Input
+                            id="school"
+                            placeholder="Your school"
+                            className="pl-10"
+                            value={form.school}
+                            onChange={(e) =>
+                              updateField(
+                                "school",
+                                e.target.value
+                              )
+                            }
+                            required
+                          />
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* Guardian */}
+                  <div>
+
+                    <h3 className="mb-3 text-sm font-semibold">
+                      Parent / Guardian
+                    </h3>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="guardianName">
+                          Guardian name
+                        </Label>
+
+                        <div className="relative">
+
+                          <Users className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                          <Input
+                            id="guardianName"
+                            placeholder="Parent or guardian"
+                            className="pl-10"
+                            value={form.guardianName}
+                            onChange={(e) =>
+                              updateField(
+                                "guardianName",
+                                e.target.value
+                              )
+                            }
+                          />
+
+                        </div>
+
+                      </div>
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="guardianPhone">
+                          Guardian phone
+                        </Label>
+
+                        <Input
+                          id="guardianPhone"
+                          type="tel"
+                          placeholder="+263 7X XXX XXXX"
+                          value={form.guardianPhone}
+                          onChange={(e) =>
+                            updateField(
+                              "guardianPhone",
+                              e.target.value
+                            )
+                          }
+                        />
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* Password */}
+                  <div>
+
+                    <h3 className="mb-3 text-sm font-semibold">
+                      Account security
+                    </h3>
+
+                    <div className="grid gap-4 sm:grid-cols-2">
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="password">
+                          Password
+                        </Label>
+
+                        <div className="relative">
+
+                          <LockKeyhole className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
+
+                          <Input
+                            id="password"
+                            type={
+                              showPassword
+                                ? "text"
+                                : "password"
+                            }
+                            placeholder="Create password"
+                            className="pl-10 pr-10"
+                            value={form.password}
+                            onChange={(e) =>
+                              updateField(
+                                "password",
+                                e.target.value
+                              )
+                            }
+                            minLength={8}
+                            required
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowPassword(
+                                !showPassword
+                              )
+                            }
+                            className="absolute right-3 top-2.5 text-muted-foreground"
+                          >
+                            {showPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+
+                        </div>
+
+                      </div>
+
+                      <div className="space-y-2">
+
+                        <Label htmlFor="confirmPassword">
+                          Confirm password
+                        </Label>
+
+                        <div className="relative">
+
+                          <Input
+                            id="confirmPassword"
+                            type={
+                              showConfirmPassword
+                                ? "text"
+                                : "password"
+                            }
+                            placeholder="Repeat password"
+                            className="pr-10"
+                            value={form.confirmPassword}
+                            onChange={(e) =>
+                              updateField(
+                                "confirmPassword",
+                                e.target.value
+                              )
+                            }
+                            minLength={8}
+                            required
+                          />
+
+                          <button
+                            type="button"
+                            onClick={() =>
+                              setShowConfirmPassword(
+                                !showConfirmPassword
+                              )
+                            }
+                            className="absolute right-3 top-2.5 text-muted-foreground"
+                          >
+                            {showConfirmPassword ? (
+                              <EyeOff className="h-4 w-4" />
+                            ) : (
+                              <Eye className="h-4 w-4" />
+                            )}
+                          </button>
+
+                        </div>
+
+                      </div>
+
+                    </div>
+
+                  </div>
+
+                  {/* Terms */}
+                  <div className="flex items-start gap-3 rounded-lg border bg-muted/30 p-4">
+
+                    <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-primary" />
+
+                    <p className="text-xs leading-5 text-muted-foreground">
+                      Your account information is securely stored
+                      and is used to provide your GlobeDK learning
+                      experience. By creating an account, you agree
+                      to the academy's terms and privacy policy.
+                    </p>
+
+                  </div>
+
+                  <Button
+                    type="submit"
+                    className="h-11 w-full"
+                    disabled={loading}
+                  >
+                    {loading
+                      ? "Creating account..."
+                      : "Create student account"}
+
+                    {!loading && (
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    )}
+                  </Button>
+
+                </form>
+
+                <p className="mt-6 text-center text-sm text-muted-foreground">
+                  Already have an account?{" "}
+                  <Link
+                    href="/login"
+                    className="font-semibold text-primary hover:underline"
+                  >
+                    Sign in
+                  </Link>
+                </p>
+
+              </CardContent>
+
+            </Card>
+
           </div>
 
-          {/* Documents Upload */}
-          {/* <div className="space-y-4">
-            <h2 className="font-medium">Documents Upload (Optional)</h2>
-            {formData.documents.map((doc, index) => (
-              <div key={index} className="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
-                <input
-                  type="text"
-                  placeholder="Document Name"
-                  className="w-full border rounded px-3 py-2"
-                  value={doc.name}
-                  onChange={(e) => handleDocumentChange(index, doc.file || null, e.target.value)}
-                />
-                <input
-                  type="file"
-                  className="w-full"
-                  onChange={(e) => handleDocumentChange(index, e.target.files?.[0] || null, doc.name)}
-                />
-              </div>
-            ))}
-            <button type="button" className="text-blue-600 underline mt-2" onClick={addDocument}>
-              + Add Another Document
-            </button>
-          </div> */}
+        </div>
 
-          <div className="text-center mt-6">
-            <Button type="submit" className="w-full md:w-auto">
-              Submit Application
-            </Button>
-          </div>
-        </form>
       </div>
-    </div>
-  );
+    </main>
+  )
 }
