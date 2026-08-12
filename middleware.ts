@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 
-const protectedRoutes = ["/admin/dashboard", "/admin/applicants", "/admin/subjects"];
+const protectedRoutes = ["/admin/dashboard", "/admin/applicants","/tutor/dashboard","/student/dashboard", "/admin/subjects"];
 
 export function middleware(req: NextRequest) {
   const url = req.nextUrl.clone();
