@@ -1,7 +1,7 @@
 import { NextRequest } from "next/server"
 import { NextResponse } from "next/server"
 
-import { verifyToken } from "@/lib/jwt"
+import { verifyToken } from "@/lib/auth"
 
 export async function middleware(
   request: NextRequest
