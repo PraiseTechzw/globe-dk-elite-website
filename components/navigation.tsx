@@ -17,7 +17,7 @@ export function Navigation() {
     { href: "/about", label: "About" },
     { href: "/subjects", label: "Subjects" },
     {
-      href: "/exam-predictor",
+      href: "/login",
       label: "AI Exam Predictor",
       ai: true,
     },
