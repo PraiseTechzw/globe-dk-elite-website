@@ -1,0 +1,178 @@
+[
+    {
+        "year": 2014,
+        "session": "june",
+        "paper": 1,
+        "paper_code": "4008/1",
+        "start_page": 1,
+        "end_page": 24
+    },
+    {
+        "year": 2014,
+        "session": "november",
+        "paper": 1,
+        "paper_code": null,
+        "start_page": 25,
+        "end_page": 78
+    },
+    {
+        "year": 2014,
+        "session": "november",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 79,
+        "end_page": 89
+    },
+    {
+        "year": 2014,
+        "session": "june",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 90,
+        "end_page": 100
+    },
+    {
+        "year": 2015,
+        "session": "june",
+        "paper": 1,
+        "paper_code": null,
+        "start_page": 101,
+        "end_page": 128
+    },
+    {
+        "year": 2015,
+        "session": "june",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 129,
+        "end_page": 139
+    },
+    {
+        "year": 2015,
+        "session": "november",
+        "paper": 1,
+        "paper_code": null,
+        "start_page": 140,
+        "end_page": 227
+    },
+    {
+        "year": 2016,
+        "session": "june",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 228,
+        "end_page": 253
+    },
+    {
+        "year": 2016,
+        "session": "november",
+        "paper": 1,
+        "paper_code": null,
+        "start_page": 254,
+        "end_page": 281
+    },
+    {
+        "year": 2016,
+        "session": "november",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 282,
+        "end_page": 309
+    },
+    {
+        "year": 2017,
+        "session": "june",
+        "paper": 1,
+        "paper_code": null,
+        "start_page": 310,
+        "end_page": 333
+    },
+    {
+        "year": 2017,
+        "session": "june",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 334,
+        "end_page": 363
+    },
+    {
+        "year": 2017,
+        "session": "november",
+        "paper": 1,
+        "paper_code": null,
+        "start_page": 364,
+        "end_page": 389
+    },
+    {
+        "year": 2017,
+        "session": "november",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 390,
+        "end_page": 421
+    },
+    {
+        "year": 2018,
+        "session": "june",
+        "paper": 1,
+        "paper_code": null,
+        "start_page": 422,
+        "end_page": 449
+    },
+    {
+        "year": 2018,
+        "session": "june",
+        "paper": 2,
+        "paper_code": null,
+        "start_page": 450,
+        "end_page": 495
+    },
+    {
+        "year": 2018,
+        "session": "november",
+        "paper": 2,
+        "paper_code": "4004/2",
+        "start_page": 496,
+        "end_page": 515
+    },
+    {
+        "year": 2019,
+        "session": "june",
+        "paper": 1,
+        "paper_code": "4004/1",
+        "start_page": 516,
+        "end_page": 540
+    },
+    {
+        "year": 2019,
+        "session": "june",
+        "paper": 2,
+        "paper_code": "4004/2",
+        "start_page": 541,
+        "end_page": 590
+    },
+    {
+        "year": 2020,
+        "session": "june",
+        "paper": 2,
+        "paper_code": "4004/2",
+        "start_page": 591,
+        "end_page": 618
+    },
+    {
+        "year": 2019,
+        "session": "november",
+        "paper": 1,
+        "paper_code": "4004/1",
+        "start_page": 619,
+        "end_page": 676
+    },
+    {
+        "year": 2020,
+        "session": "november",
+        "paper": 2,
+        "paper_code": "4004/2",
+        "start_page": 677,
+        "end_page": 686
+    }
+]
