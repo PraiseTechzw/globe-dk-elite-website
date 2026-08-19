@@ -1,7 +1,7 @@
 import { SignJWT, jwtVerify } from "jose";
 
 const secret = new TextEncoder().encode(
-  process.env.JWT_SECRET
+  process.env.JWT_SECRET || "default-globedk-elite-jwt-secret-key-32chars"
 );
 
 export async function createToken(
