@@ -383,7 +383,7 @@ export default function HomePage() {
               <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-slate-700/80 pt-5 text-xs font-medium text-slate-300 lg:justify-start">
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4 text-amber-400" />
-                  <span>95% Pass Rate Distinction Track Record</span>
+                  <span>Focused tuition for exam confidence</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <ShieldCheck className="h-4 w-4 text-amber-400" />
@@ -408,13 +408,13 @@ export default function HomePage() {
                   <CardHeader className="border-b border-slate-800 pb-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white p-1 shrink-0">
+                        <div className="flex h-13 w-13 items-center justify-center shrink-0 bg-[#f8f7f2] p-1">
                           <Image
-                            src="/Logo.png"
+                            src="/logo.png"
                             alt="GlobeDk Elite Crest"
-                            width={40}
-                            height={40}
-                            className="object-contain"
+                            width={52}
+                            height={58}
+                            className="h-full w-full object-contain"
                           />
                         </div>
                         <div>
@@ -456,24 +456,10 @@ export default function HomePage() {
                       </div>
                     </div>
 
-                    {/* Academic Overview Matrix */}
-                    <div className="grid grid-cols-2 gap-3 pt-1">
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
-                        <span className="font-serif text-2xl font-bold text-white block">95%+</span>
-                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Pass Rate</span>
-                      </div>
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
-                        <span className="font-serif text-2xl font-bold text-amber-400 block">16+</span>
-                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Subjects</span>
-                      </div>
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
-                        <span className="font-serif text-2xl font-bold text-sky-400 block">Epworth</span>
-                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Campus</span>
-                      </div>
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
-                        <span className="font-serif text-2xl font-bold text-emerald-400 block">24/7</span>
-                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">AI Portal</span>
-                      </div>
+                    <div className="space-y-2 rounded-xl border border-slate-700/60 bg-slate-800/40 p-4 text-sm text-slate-200">
+                      <p className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-amber-300" />Small, focused learning groups</p>
+                      <p className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-amber-300" />In-person and live online lessons</p>
+                      <p className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-amber-300" />Guidance built around each learner</p>
                     </div>
 
                     <Button asChild className="w-full h-11 font-bold text-xs uppercase tracking-wider">
@@ -490,32 +476,14 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* =========================================================================
-          KEY STATISTICAL HALLMARKS (EDITORIAL STYLE)
-      ========================================================================== */}
-      <section className="border-y border-border bg-card py-10">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-border">
-            <div className="space-y-1 px-4">
-              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">500+</div>
-              <div className="text-sm font-semibold text-foreground">Scholars Mentored</div>
-              <p className="text-xs text-muted-foreground">Throughout Zimbabwe &amp; the Diaspora</p>
-            </div>
-            <div className="space-y-1 px-4">
-              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">95%</div>
-              <div className="text-sm font-semibold text-foreground">Examination Pass Rate</div>
-              <p className="text-xs text-muted-foreground">ZIMSEC &amp; Cambridge Distinction Ratio</p>
-            </div>
-            <div className="space-y-1 px-4">
-              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">16+</div>
-              <div className="text-sm font-semibold text-foreground">Academic Disciplines</div>
-              <p className="text-xs text-muted-foreground">Sciences, Commercials, Arts &amp; Tech</p>
-            </div>
-            <div className="space-y-1 px-4">
-              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">100%</div>
-              <div className="text-sm font-semibold text-foreground">Individualized Focus</div>
-              <p className="text-xs text-muted-foreground">Campus &amp; Digital Learning Formats</p>
-            </div>
+      <section className="border-y border-border bg-[#f7f5f0] py-16 md:py-20">
+        <div className="container mx-auto grid max-w-6xl items-center gap-10 px-4 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-sm"><Image src="/african-students-learning-in-modern-classroom.jpg" alt="Students learning together in a modern classroom" fill className="object-cover" /></div>
+          <div className="max-w-xl space-y-5">
+            <p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-700">Learning at GlobeDk</p>
+            <h2 className="font-serif text-3xl font-bold leading-tight tracking-tight text-slate-950 sm:text-4xl">A serious education, shaped around the learner.</h2>
+            <p className="text-base leading-relaxed text-slate-600">Every student arrives with a different starting point. Our teachers make room for questions, sustained practice, and the confidence that comes from understanding—not memorising.</p>
+            <Link href="/about" className="inline-flex items-center gap-2 text-sm font-bold text-slate-950 underline decoration-amber-500 decoration-2 underline-offset-8 transition-colors hover:text-amber-800">Discover the Academy <ArrowRight className="h-4 w-4" /></Link>
           </div>
         </div>
       </section>
@@ -672,45 +640,47 @@ export default function HomePage() {
       {/* =========================================================================
           AI EXAM PREDICTOR FORECAST ENGINE
       ========================================================================== */}
-      <section className="py-16 md:py-24 bg-slate-950 text-white relative overflow-hidden border-y border-slate-800">
+      <section className="relative overflow-hidden border-y border-slate-800 bg-slate-950 py-16 text-white md:py-24">
+        <Image src="/classroom-study-session.png" alt="Students studying together at GlobeDk Elite Academy" fill className="object-cover object-center opacity-[0.12]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/95 to-slate-950/70" />
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-6 space-y-6">
-              <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs uppercase tracking-wider font-semibold">
+              <Badge className="border-amber-400/30 bg-amber-400/15 text-amber-200 text-xs font-semibold uppercase tracking-wider">
                 <Sparkles className="mr-1.5 h-3.5 w-3.5" />
                 AI Examination Intelligence
               </Badge>
 
-              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-                Statistical Examination Forecasting
+              <h2 className="max-w-xl font-serif text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl md:text-5xl">
+                Make every revision session count.
               </h2>
 
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-light">
-                GlobeDk Elite Academy incorporates machine learning models analyzing 10+ years of historical ZIMSEC &amp; Cambridge examination papers to predict recurring topic clusters, question structures, and mark weightings.
+              <p className="max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
+                Explore recurring topic patterns, question structures, and mark weighting from historical ZIMSEC and Cambridge papers—then build a focused plan with your tutor.
               </p>
 
-              <div className="space-y-3 pt-1">
-                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+              <div className="grid gap-3 pt-1 sm:grid-cols-2">
+                <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                   <Zap className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-serif font-bold text-sm text-white">Historical Frequency Mapping</h4>
-                    <p className="text-xs text-slate-400">Maps recurring syllabus topics across past examination sittings.</p>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-400">See which syllabus areas occur most often across past sittings.</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900 border border-slate-800">
+                <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur-sm">
                   <Sparkles className="h-5 w-5 text-sky-400 shrink-0 mt-0.5" />
                   <div>
                     <h4 className="font-serif font-bold text-sm text-white">High-Yield Priority Indicators</h4>
-                    <p className="text-xs text-slate-400">Enables students to optimize revision on the highest probability topics.</p>
+                    <p className="mt-1 text-xs leading-relaxed text-slate-400">Turn evidence into a clear sequence for your revision.</p>
                   </div>
                 </div>
               </div>
 
               <div className="pt-2">
-                <Button asChild size="lg" className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg h-12 px-7">
+                <Button asChild size="lg" className="h-12 bg-amber-400 px-6 font-bold text-slate-950 shadow-lg shadow-black/20 hover:bg-amber-300">
                   <Link href="/exam-predictor">
-                    Launch AI Exam Intelligence
+                    Explore the Exam Lab
                     <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
@@ -719,12 +689,11 @@ export default function HomePage() {
 
             {/* Visual Forecast Matrix */}
             <div className="lg:col-span-6">
-              <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-2xl backdrop-blur-xl space-y-5">
+              <div className="overflow-hidden rounded-2xl border border-white/10 bg-slate-900/90 shadow-2xl backdrop-blur-xl">
+                <div className="relative h-24 overflow-hidden border-b border-white/10 sm:h-28"><Image src="/african-students-learning-in-modern-classroom.jpg" alt="Students learning in a modern classroom" fill className="object-cover opacity-70" /><div className="absolute inset-0 bg-gradient-to-r from-slate-950/90 to-slate-950/20" /><div className="absolute inset-0 flex items-center gap-2 px-6"><span className="grid h-9 w-9 place-items-center rounded-lg bg-amber-400 text-slate-950"><Sparkles className="h-4 w-4" /></span><span><span className="block text-[10px] font-bold uppercase tracking-[0.16em] text-amber-200">Live example</span><span className="font-serif text-base font-bold text-white">Exam Lab forecast</span></span></div></div>
+                <div className="space-y-5 p-5 sm:p-6">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-4">
-                  <div className="flex items-center gap-2">
-                    <Sparkles className="h-5 w-5 text-amber-400" />
-                    <span className="font-serif font-bold text-sm text-white">ZIMSEC &amp; Cambridge Forecaster</span>
-                  </div>
+                  <span className="font-serif font-bold text-sm text-white">ZIMSEC &amp; Cambridge Forecaster</span>
                   <Badge variant="outline" className="text-xs text-slate-400 border-slate-700">
                     Subject: Pure Mathematics
                   </Badge>
@@ -777,6 +746,7 @@ export default function HomePage() {
                   <Link href="/exam-predictor" className="text-amber-400 hover:underline font-semibold">
                     Test Full Tool →
                   </Link>
+                </div>
                 </div>
               </div>
             </div>

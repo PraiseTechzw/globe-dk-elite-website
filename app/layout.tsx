@@ -123,7 +123,7 @@ export const metadata: Metadata = {
 
     images: [
       {
-        url: "/Logo.png",
+        url: "/logo.png",
         width: 1200,
         height: 630,
         alt: "GlobeDk Elite Academy",
@@ -140,13 +140,13 @@ export const metadata: Metadata = {
     description:
       "Professional Online Lessons, Physical Lessons and Homeschooling for ZIMSEC & Cambridge students.",
 
-    images: ["/Logo.png"],
+    images: ["/logo.png"],
   },
 
   icons: {
-    icon: "/Logo.png",
-    shortcut: "/Logo.png",
-    apple: "/Logo.png",
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
   },
 
   category: "Education",
@@ -179,12 +179,12 @@ export default function RootLayout({
 
         <link
           rel="icon"
-          href="/Logo.png"
+          href="/logo.png"
         />
 
         <link
           rel="apple-touch-icon"
-          href="/Logo.png"
+          href="/logo.png"
         />
 
         {/* Educational Organization Schema */}
@@ -197,8 +197,8 @@ export default function RootLayout({
               "@type": "EducationalOrganization",
               name: "GlobeDk Elite Academy",
               url: "https://www.globedk.co.zw",
-              logo: "https://www.globedk.co.zw/Logo.png",
-              image: "https://www.globedk.co.zw/Logo.png",
+              logo: "https://www.globedk.co.zw/logo.png",
+              image: "https://www.globedk.co.zw/logo.png",
               email: "admission@globedk.co.zw",
               telephone: "+263786053315",
 
@@ -242,7 +242,7 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "GlobeDk Elite Academy",
-              image: "https://www.globedk.co.zw/Logo.png",
+              image: "https://www.globedk.co.zw/logo.png",
               url: "https://www.globedk.co.zw",
               telephone: "+263786053315",
               email: "admission@globedk.co.zw",

@@ -40,7 +40,7 @@ export function Navigation() {
       <div className="border-b border-slate-200 bg-[#fcfcfb]">
         <div className="container mx-auto flex h-[76px] items-center px-4">
           <Link href="/" className="group z-10 flex items-center gap-3" aria-label="GlobeDk Elite Academy home">
-            <span className="grid h-12 w-12 place-items-center overflow-hidden rounded-full border border-slate-200 bg-white p-1 shadow-sm transition-transform group-hover:scale-105"><Image src="/Logo.png" alt="GlobeDk Elite Academy" width={42} height={42} className="object-contain" priority /></span>
+            <span className="block h-14 w-14 shrink-0 transition-transform group-hover:scale-105"><Image src="/logo.png" alt="GlobeDk Elite Academy" width={56} height={62} className="h-full w-full object-contain" priority /></span>
             <span className="leading-none"><span className="block font-serif text-xl font-bold tracking-tight text-[#071a35]">GlobeDk</span><span className="mt-1 block text-[9px] font-bold uppercase tracking-[0.2em] text-slate-500">Elite Academy</span></span>
           </Link>
 

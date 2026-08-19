@@ -64,13 +64,13 @@ export function Footer() {
           {/* Brand Col (2 cols on lg) */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-700 bg-white shadow-lg shadow-black/20">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center bg-[#f8f7f2] p-1.5">
                 <Image
-                  src="/Logo.png"
+                  src="/logo.png"
                   alt=""
-                  width={72}
-                  height={72}
-                  className="scale-[1.45] object-contain"
+                  width={80}
+                  height={89}
+                  className="h-full w-full object-contain"
                   priority
                 />
               </div>
