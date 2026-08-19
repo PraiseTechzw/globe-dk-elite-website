@@ -345,7 +345,7 @@ export default function SubjectsPage() {
 
             <div className="mt-10 flex flex-wrap justify-center gap-4">
               <Button asChild size="lg">
-                <Link href="/contact">Enroll Today</Link>
+                <Link href="/enroll">Enroll Today</Link>
               </Button>
 
               <Button variant="secondary" size="lg" asChild>
@@ -767,8 +767,8 @@ export default function SubjectsPage() {
                     variant="secondary"
                     asChild
                   >
-                    <Link href="/contact">
-                      Enrol Now
+                    <Link href="/enroll">
+                      Enroll Now
                     </Link>
                   </Button>
 

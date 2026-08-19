@@ -74,16 +74,16 @@ export default function TimetablePage() {
 
   const announcements = [
     {
-      title: "Mid-Term Assessments",
-      date: "November 15–17, 2025",
+      title: "Term Mid-Term Assessments",
+      date: "Upcoming Academic Session 2026",
       description:
-        "All students will take mid-term assessments to track progress.",
+        "All enrolled students will complete standardized assessments to track syllabus mastery.",
     },
     {
-      title: "Mock Examinations",
-      date: "Dec 1–4, 2025",
+      title: "ZIMSEC & Cambridge Mock Examinations",
+      date: "Candidate Preparation Weeks",
       description:
-        "Full mock exams under exam conditions for all students.",
+        "Full timed mock exams under authentic examination hall conditions with detailed tutor feedback.",
     },
   ];
 

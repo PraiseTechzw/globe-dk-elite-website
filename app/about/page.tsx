@@ -1,11 +1,14 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import { motion, useScroll, useTransform, Variants } from "framer-motion";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, MessageCircle } from "lucide-react";
 import {
   Target,
   Eye,
@@ -23,10 +26,7 @@ import {
   GraduationCap,
 } from "lucide-react";
 
-/**
- * Local source file path
- */
-export const SOURCE_FILE = "/mnt/data/page.tsx";
+
 
 const sectionVariant: Variants = {
   hidden: {
@@ -708,6 +708,30 @@ export default function AboutPage() {
               Homeschooling, Live Virtual Classes and personalised
               tutoring designed to help you achieve academic excellence.
             </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center pt-2">
+              <Button asChild size="lg" variant="secondary" className="font-bold text-base h-12 px-8 shadow-lg">
+                <Link href="/enroll">
+                  Enroll For Lessons
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Link>
+              </Button>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="bg-primary-foreground/10 border-primary-foreground/30 hover:bg-primary-foreground/20 text-white font-semibold text-base h-12 px-8"
+              >
+                <a
+                  href="https://wa.me/263786053315?text=Hello%20Dr%20Daka,%20I%20would%20like%20to%20know%20more%20about%20GlobeDk%20Elite%20Academy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <MessageCircle className="mr-2 h-4 w-4 text-emerald-400" />
+                  Chat on WhatsApp
+                </a>
+              </Button>
+            </div>
           </motion.div>
         </div>
       </motion.section>
