@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { Navigation } from "@/components/navigation";
 import { Footer } from "@/components/footer";
 import { Button } from "@/components/ui/button";
@@ -25,12 +26,12 @@ import {
   ArrowRight,
   Download,
   BookOpen,
-  MessageCircle,
   HelpCircle,
   BarChart3,
   Layers,
   ChevronRight,
 } from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
 
 interface TopicPrediction {
   topic: string;
@@ -207,18 +208,17 @@ export default function ExamPredictorPage() {
       <Navigation />
 
       {/* Header Banner */}
-      <section className="bg-slate-950 text-white py-14 md:py-20 border-b border-slate-800 relative overflow-hidden">
-        <div className="container mx-auto px-4 relative z-10 text-center max-w-4xl space-y-4">
-          <Badge className="bg-gradient-to-r from-amber-500 to-orange-500 text-white border-0 shadow-md">
-            <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-            AI Examination Intelligence Engine
-          </Badge>
-          <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
-            AI Exam Predictor &amp; Topic Forecaster
-          </h1>
-          <p className="text-sm sm:text-base text-slate-300 max-w-2xl mx-auto leading-relaxed">
-            Gain a strategic advantage in your <strong>ZIMSEC &amp; Cambridge</strong> exams. Our machine learning algorithms analyze historical pattern frequencies, question structures, and mark weightings across past examination papers.
-          </p>
+      <section className="relative overflow-hidden border-b border-slate-800 bg-slate-950 py-14 text-white md:py-20">
+        <Image src="/classroom-study-session.png" alt="Students preparing together in a classroom" fill priority className="object-cover object-center opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/95 to-slate-950/55" />
+        <div className="container relative z-10 mx-auto grid max-w-6xl items-center gap-8 px-4 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="max-w-2xl space-y-5">
+            <Badge className="border-amber-400/30 bg-amber-400/15 text-amber-200 shadow-none"><Sparkles className="mr-1.5 h-3.5 w-3.5" />AI Examination Intelligence</Badge>
+            <h1 className="font-serif text-4xl font-bold leading-[1.06] tracking-tight sm:text-5xl">Study with a clearer view of what matters most.</h1>
+            <p className="max-w-xl text-sm leading-relaxed text-slate-300 sm:text-base">Review topic patterns, mark weighting, and revision priorities from historical examination papers. Use the forecast as a focused revision guide for ZIMSEC and Cambridge preparation.</p>
+            <div className="flex flex-wrap gap-3 text-xs font-semibold text-slate-200"><span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">Pattern-led revision</span><span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">Topic confidence scores</span><span className="rounded-full border border-white/15 bg-white/5 px-3 py-1.5">Tutor-led support</span></div>
+          </div>
+          <div className="relative hidden overflow-hidden rounded-2xl border border-white/15 bg-slate-900/60 p-3 shadow-2xl lg:block"><div className="relative aspect-[4/3] overflow-hidden rounded-xl"><Image src="/classroom-study-session.png" alt="GlobeDk students in a focused study session" fill className="object-cover" /><div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-slate-950/90 to-transparent p-5"><p className="text-xs font-bold uppercase tracking-[0.16em] text-amber-200">Built for focused preparation</p><p className="mt-1 font-serif text-xl font-bold">Turn revision time into a plan.</p></div></div></div>
         </div>
       </section>
 
@@ -362,9 +362,9 @@ export default function ExamPredictorPage() {
                             {pred.topic}
                           </CardTitle>
                           <CardDescription className="text-xs text-muted-foreground flex items-center gap-3 mt-0.5">
-                            <span>📅 {pred.historicalFrequency}</span>
-                            <span>•</span>
-                            <span>⚖️ Weighting: {pred.expectedMarks}</span>
+                            <span className="inline-flex items-center gap-1"><Clock className="h-3.5 w-3.5" />{pred.historicalFrequency}</span>
+                            <span className="h-1 w-1 rounded-full bg-slate-400" />
+                            <span>Weighting: {pred.expectedMarks}</span>
                           </CardDescription>
                         </div>
                       </div>
@@ -466,7 +466,7 @@ export default function ExamPredictorPage() {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <MessageCircle className="mr-2 h-4 w-4 text-emerald-400" />
+                    <FaWhatsapp className="mr-2 h-4 w-4 text-emerald-400" />
                     Ask Dr. Daka on WhatsApp
                   </a>
                 </Button>
