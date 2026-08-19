@@ -65,13 +65,13 @@ export function Footer() {
           {/* Brand Col (2 cols on lg) */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-16 w-16 shrink-0 items-start justify-center overflow-hidden rounded-2xl border border-amber-400/30 bg-[#f8f7f2] p-1.5 shadow-inner">
+              <div className="flex h-14 w-16 shrink-0 items-start justify-center overflow-hidden rounded-2xl border border-amber-400/30 bg-[#f8f7f2] p-1.5 shadow-inner">
                 <Image
                   src="/logo.png"
                   alt="GlobeDk Elite Academy crest"
                   width={80}
                   height={89}
-                  className="h-auto w-full object-contain object-top"
+                  className="h-auto w-[115%] max-w-none object-contain object-top"
                   priority
                 />
               </div>

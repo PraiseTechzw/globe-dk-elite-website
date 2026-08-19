@@ -57,13 +57,13 @@ export function Navigation() {
             className="group z-10 flex items-center gap-3"
             aria-label="GlobeDk Elite Academy home"
           >
-            <span className="flex h-12 w-12 shrink-0 items-start justify-center overflow-hidden rounded-xl border border-amber-500/30 bg-[#f8f7f2] p-1 shadow-sm transition-transform group-hover:scale-105">
+            <span className="flex h-10 w-12 shrink-0 items-start justify-center overflow-hidden rounded-xl border border-amber-500/30 bg-[#f8f7f2] p-1 shadow-sm transition-transform group-hover:scale-105">
               <Image
                 src="/logo.png"
                 alt="GlobeDk Elite Academy crest"
                 width={56}
                 height={62}
-                className="h-auto w-full object-contain object-top"
+                className="h-auto w-[115%] max-w-none object-contain object-top"
                 priority
               />
             </span>

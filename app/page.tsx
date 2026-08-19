@@ -510,13 +510,13 @@ export default function HomePage() {
                   <CardHeader className="border-b border-slate-800 pb-4">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-13 w-13 shrink-0 items-start justify-center overflow-hidden rounded-xl border border-amber-400/30 bg-[#f8f7f2] p-1 shadow-inner">
+                        <div className="flex h-11 w-13 shrink-0 items-start justify-center overflow-hidden rounded-xl border border-amber-400/30 bg-[#f8f7f2] p-1 shadow-inner">
                           <Image
                             src="/logo.png"
                             alt="GlobeDk Elite Academy crest"
                             width={52}
                             height={58}
-                            className="h-auto w-full object-contain object-top"
+                            className="h-auto w-[115%] max-w-none object-contain object-top"
                           />
                         </div>
                         <div>
