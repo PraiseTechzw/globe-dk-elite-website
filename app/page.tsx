@@ -506,21 +506,21 @@ export default function HomePage() {
               className="lg:col-span-5"
             >
               <div className="relative rounded-3xl p-1 bg-gradient-to-b from-amber-500/30 via-slate-800/50 to-transparent shadow-2xl backdrop-blur-xl">
-                <Card className="min-w-0 border-0 bg-slate-900/95 text-white rounded-[22px] overflow-hidden">
+                <Card className="border-0 bg-slate-900/95 text-white rounded-[22px] overflow-hidden">
                   <CardHeader className="border-b border-slate-800 pb-4">
-                    <div className="flex min-w-0 flex-col items-start gap-3 sm:flex-row sm:items-center sm:justify-between">
-                      <div className="flex min-w-0 items-center gap-3">
-                        <div className="flex h-13 w-13 items-center justify-center shrink-0 bg-[#f8f7f2] p-1">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-13 w-13 shrink-0 items-start justify-center overflow-hidden rounded-xl border border-amber-400/30 bg-[#f8f7f2] p-1 shadow-inner">
                           <Image
                             src="/logo.png"
-                            alt="GlobeDk Elite Crest"
+                            alt="GlobeDk Elite Academy crest"
                             width={52}
                             height={58}
-                            className="h-full w-full object-contain"
+                            className="h-auto w-full object-contain object-top"
                           />
                         </div>
-                        <div className="min-w-0">
-                          <CardTitle className="font-serif text-base font-bold text-white sm:whitespace-nowrap">
+                        <div>
+                          <CardTitle className="font-serif text-base font-bold text-white">
                             GlobeDk Elite Academy
                           </CardTitle>
                           <CardDescription className="text-xs text-slate-400">
@@ -528,7 +528,7 @@ export default function HomePage() {
                           </CardDescription>
                         </div>
                       </div>
-                      <Badge className="shrink-0 bg-amber-500/20 text-amber-300 border-amber-500/30 text-[10px] uppercase font-bold tracking-wider">
+                      <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-[10px] uppercase font-bold tracking-wider">
                         Admissions Active
                       </Badge>
                     </div>

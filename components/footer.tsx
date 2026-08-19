@@ -1,5 +1,5 @@
-import Link from "next/link"
-import Image from "next/image"
+import Link from "next/link";
+import Image from "next/image";
 import {
   Phone,
   Mail,
@@ -11,11 +11,11 @@ import {
   GraduationCap,
   Scale,
   Lock,
-} from "lucide-react"
-import { FaWhatsapp } from "react-icons/fa6"
+} from "lucide-react";
+import { FaWhatsapp } from "react-icons/fa6";
 
 export function Footer() {
-  const currentYear = new Date().getFullYear()
+  const currentYear = new Date().getFullYear();
 
   return (
     <footer className="border-t border-border bg-slate-950 text-slate-200">
@@ -32,7 +32,8 @@ export function Footer() {
                   GlobeDk Elite Academy Admissions
                 </h3>
                 <p className="text-sm text-slate-400">
-                  Online Virtual Classrooms, Harare Campus Lessons, Homeschooling &amp; AI-Powered Exam Prep.
+                  Online Virtual Classrooms, Harare Campus Lessons,
+                  Homeschooling &amp; AI-Powered Exam Prep.
                 </p>
               </div>
             </div>
@@ -64,29 +65,39 @@ export function Footer() {
           {/* Brand Col (2 cols on lg) */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-20 w-20 shrink-0 items-center justify-center bg-[#f8f7f2] p-1.5">
+              <div className="flex h-16 w-16 shrink-0 items-start justify-center overflow-hidden rounded-2xl border border-amber-400/30 bg-[#f8f7f2] p-1.5 shadow-inner">
                 <Image
                   src="/logo.png"
-                  alt=""
+                  alt="GlobeDk Elite Academy crest"
                   width={80}
                   height={89}
-                  className="h-full w-full object-contain"
+                  className="h-auto w-full object-contain object-top"
                   priority
                 />
               </div>
               <div>
-                <span className="font-serif font-bold text-xl text-white block">GlobeDk Elite</span>
-                <span className="text-[10px] text-amber-300 uppercase tracking-[0.18em] font-bold">Academy · Harare &amp; Online</span>
+                <span className="font-serif font-bold text-xl text-white block">
+                  GlobeDk Elite
+                </span>
+                <span className="text-[10px] text-amber-300 uppercase tracking-[0.18em] font-bold">
+                  Academy · Harare &amp; Online
+                </span>
               </div>
             </div>
 
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              Zimbabwe&apos;s trusted educational center offering rigorous preparation for ZIMSEC &amp; Cambridge International O-Level and A-Level examinations through physical campus classes, live virtual instruction, and AI syllabus intelligence.
+              Zimbabwe&apos;s trusted educational center offering rigorous
+              preparation for ZIMSEC &amp; Cambridge International O-Level and
+              A-Level examinations through physical campus classes, live virtual
+              instruction, and AI syllabus intelligence.
             </p>
 
             <div className="flex items-center gap-2 text-xs text-slate-400">
               <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
-              <span>Certified Faculty • Proven 95% Examination Pass Rate Track Record</span>
+              <span>
+                Certified Faculty • Proven 95% Examination Pass Rate Track
+                Record
+              </span>
             </div>
           </div>
 
@@ -102,27 +113,42 @@ export function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="hover:text-white transition-colors">
+                <Link
+                  href="/about"
+                  className="hover:text-white transition-colors"
+                >
                   Academy &amp; Leadership
                 </Link>
               </li>
               <li>
-                <Link href="/subjects" className="hover:text-white transition-colors">
+                <Link
+                  href="/subjects"
+                  className="hover:text-white transition-colors"
+                >
                   Curriculum &amp; Tuition
                 </Link>
               </li>
               <li>
-                <Link href="/timetable" className="hover:text-white transition-colors">
+                <Link
+                  href="/timetable"
+                  className="hover:text-white transition-colors"
+                >
                   Weekend Timetable
                 </Link>
               </li>
               <li>
-                <Link href="/testimonials" className="hover:text-white transition-colors">
+                <Link
+                  href="/testimonials"
+                  className="hover:text-white transition-colors"
+                >
                   Honors &amp; Results
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-white transition-colors">
+                <Link
+                  href="/contact"
+                  className="hover:text-white transition-colors"
+                >
                   Admissions Office
                 </Link>
               </li>
@@ -136,33 +162,51 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
-                <Link href="/subjects" className="hover:text-white transition-colors">
+                <Link
+                  href="/subjects"
+                  className="hover:text-white transition-colors"
+                >
                   ZIMSEC O-Level &amp; A-Level
                 </Link>
               </li>
               <li>
-                <Link href="/subjects" className="hover:text-white transition-colors">
+                <Link
+                  href="/subjects"
+                  className="hover:text-white transition-colors"
+                >
                   Cambridge IGCSE &amp; A-Level
                 </Link>
               </li>
               <li>
-                <Link href="/enroll" className="hover:text-white transition-colors">
+                <Link
+                  href="/enroll"
+                  className="hover:text-white transition-colors"
+                >
                   Homeschooling Zimbabwe
                 </Link>
               </li>
               <li>
-                <Link href="/enroll" className="hover:text-white transition-colors">
+                <Link
+                  href="/enroll"
+                  className="hover:text-white transition-colors"
+                >
                   1-on-1 Mentorship
                 </Link>
               </li>
               <li>
-                <Link href="/exam-predictor" className="hover:text-amber-400 transition-colors flex items-center gap-1.5 font-medium">
+                <Link
+                  href="/exam-predictor"
+                  className="hover:text-amber-400 transition-colors flex items-center gap-1.5 font-medium"
+                >
                   <Sparkles className="h-3.5 w-3.5 text-amber-400" />
                   AI Exam Intelligence
                 </Link>
               </li>
               <li>
-                <Link href="/payment" className="hover:text-white transition-colors">
+                <Link
+                  href="/payment"
+                  className="hover:text-white transition-colors"
+                >
                   Tuition Payment Methods
                 </Link>
               </li>
@@ -176,29 +220,44 @@ export function Footer() {
             </h4>
             <ul className="space-y-2 text-sm text-slate-400">
               <li>
-                <Link href="/privacy" className="hover:text-white transition-colors flex items-center gap-1.5">
+                <Link
+                  href="/privacy"
+                  className="hover:text-white transition-colors flex items-center gap-1.5"
+                >
                   <Lock className="h-3.5 w-3.5 text-slate-400" />
                   Academic Privacy Policy
                 </Link>
               </li>
               <li>
-                <Link href="/terms" className="hover:text-white transition-colors flex items-center gap-1.5">
+                <Link
+                  href="/terms"
+                  className="hover:text-white transition-colors flex items-center gap-1.5"
+                >
                   <Scale className="h-3.5 w-3.5 text-slate-400" />
                   Terms of Enrollment
                 </Link>
               </li>
               <li>
-                <Link href="/terms#conduct" className="hover:text-white transition-colors">
+                <Link
+                  href="/terms#conduct"
+                  className="hover:text-white transition-colors"
+                >
                   Student Code of Conduct
                 </Link>
               </li>
               <li>
-                <Link href="/privacy#minors" className="hover:text-white transition-colors">
+                <Link
+                  href="/privacy#minors"
+                  className="hover:text-white transition-colors"
+                >
                   Minor &amp; Guardian Consent
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="hover:text-white transition-colors">
+                <Link
+                  href="/contact"
+                  className="hover:text-white transition-colors"
+                >
                   Dispute &amp; Inquiries
                 </Link>
               </li>
@@ -209,18 +268,27 @@ export function Footer() {
         {/* Bottom Credits & Payment Badges */}
         <div className="mt-12 pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-slate-400">
           <p>
-            &copy; {currentYear} GlobeDk Elite Academy. All rights reserved. Directed by Dr. John Ariphios Daka.
+            &copy; {currentYear} GlobeDk Elite Academy. All rights reserved.
+            Directed by Dr. John Ariphios Daka.
           </p>
 
           <div className="flex flex-wrap items-center gap-2.5">
             <span className="text-slate-500">Accepted Payment Channels:</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">EcoCash</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">Innbucks</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">USD Cash</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">Bank Transfer</span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">
+              EcoCash
+            </span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">
+              Innbucks
+            </span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">
+              USD Cash
+            </span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">
+              Bank Transfer
+            </span>
           </div>
         </div>
       </div>
     </footer>
-  )
+  );
 }
