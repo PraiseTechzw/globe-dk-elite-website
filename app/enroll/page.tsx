@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 import { createClient } from "@supabase/supabase-js";
 import {
   GraduationCap,
-  BookOpen,
+  BookOpenText,
   CheckCircle2,
   Phone,
   Mail,
@@ -24,50 +24,63 @@ import {
   Sparkles,
   ArrowRight,
   MessageCircle,
-  Calendar,
-  AlertCircle,
   Clock,
-  DollarSign,
-  ChevronRight,
+  AlertCircle,
+  Calculator,
+  Atom,
+  FlaskConical,
+  Dna,
+  Laptop,
+  Compass,
+  Landmark,
+  Receipt,
+  Briefcase,
+  TrendingUp,
+  Infinity as InfinityIcon,
+  BarChart3,
+  Building2,
+  Binary,
+  Scale,
+  Lock,
 } from "lucide-react";
 
-// Optional Supabase client for applications
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "";
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "";
-const supabase = supabaseUrl && supabaseAnonKey ? createClient(supabaseUrl, supabaseAnonKey) : null;
+// Supabase client with safe fallback
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || "https://placeholder-url.supabase.co";
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || "placeholder-anon-key";
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const ALL_SUBJECTS = {
   "O-Level": [
-    { name: "Mathematics", fee: 15, onlineFee: 20 },
-    { name: "English Language", fee: 15, onlineFee: 20 },
-    { name: "Combined Science", fee: 15, onlineFee: 20 },
-    { name: "Physics", fee: 15, onlineFee: 20 },
-    { name: "Chemistry", fee: 15, onlineFee: 20 },
-    { name: "Biology", fee: 15, onlineFee: 20 },
-    { name: "Computer Science", fee: 15, onlineFee: 20 },
-    { name: "Geography", fee: 15, onlineFee: 20 },
-    { name: "History", fee: 15, onlineFee: 20 },
-    { name: "Heritage Studies", fee: 15, onlineFee: 20 },
-    { name: "Commerce", fee: 15, onlineFee: 20 },
-    { name: "Principles of Accounts", fee: 15, onlineFee: 20 },
+    { name: "Mathematics", icon: Calculator, fee: 15, onlineFee: 20 },
+    { name: "English Language", icon: BookOpenText, fee: 15, onlineFee: 20 },
+    { name: "Combined Science", icon: Atom, fee: 15, onlineFee: 20 },
+    { name: "Physics", icon: Atom, fee: 15, onlineFee: 20 },
+    { name: "Chemistry", icon: FlaskConical, fee: 15, onlineFee: 20 },
+    { name: "Biology", icon: Dna, fee: 15, onlineFee: 20 },
+    { name: "Computer Science", icon: Laptop, fee: 15, onlineFee: 20 },
+    { name: "Geography", icon: Compass, fee: 15, onlineFee: 20 },
+    { name: "History & Heritage", icon: Landmark, fee: 15, onlineFee: 20 },
+    { name: "Principles of Accounts", icon: Receipt, fee: 15, onlineFee: 20 },
+    { name: "Commerce", icon: Briefcase, fee: 15, onlineFee: 20 },
+    { name: "Economics", icon: TrendingUp, fee: 15, onlineFee: 20 },
   ],
   "A-Level": [
-    { name: "Pure Mathematics", fee: 20, onlineFee: 25 },
-    { name: "Statistics", fee: 20, onlineFee: 25 },
-    { name: "Computer Science", fee: 20, onlineFee: 25 },
-    { name: "Geography", fee: 20, onlineFee: 25 },
-    { name: "Business Studies", fee: 20, onlineFee: 25 },
-    { name: "Economics", fee: 20, onlineFee: 25 },
+    { name: "Pure Mathematics", icon: InfinityIcon, fee: 20, onlineFee: 25 },
+    { name: "Statistics", icon: BarChart3, fee: 20, onlineFee: 25 },
+    { name: "Computer Science", icon: Binary, fee: 20, onlineFee: 25 },
+    { name: "Geography", icon: Compass, fee: 20, onlineFee: 25 },
+    { name: "Business Studies", icon: Building2, fee: 20, onlineFee: 25 },
+    { name: "Economics", icon: TrendingUp, fee: 20, onlineFee: 25 },
   ],
 };
 
 export default function EnrollPage() {
-  const [step, setStep] = useState<number>(1);
   const [curriculum, setCurriculum] = useState<"ZIMSEC" | "Cambridge">("ZIMSEC");
   const [level, setLevel] = useState<"O-Level" | "A-Level">("O-Level");
   const [formLevel, setFormLevel] = useState<string>("Form 4");
-  const [learningMode, setLearningMode] = useState<string>("Physical (Epworth, Harare)");
+  const [learningMode, setLearningMode] = useState<string>("Physical (Harare Campus)");
   const [selectedSubjects, setSelectedSubjects] = useState<string[]>(["Mathematics"]);
+  const [agreedToTerms, setAgreedToTerms] = useState<boolean>(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -103,9 +116,8 @@ export default function EnrollPage() {
     }
   };
 
-  // Fee calculation
   const calculateTotalFee = () => {
-    const isOnline = learningMode.includes("Online");
+    const isOnline = learningMode.includes("Online") || learningMode.includes("Virtual");
     const rate = level === "O-Level" ? (isOnline ? 20 : 15) : (isOnline ? 25 : 20);
     return selectedSubjects.length * rate;
   };
@@ -115,12 +127,17 @@ export default function EnrollPage() {
     setErrorMsg("");
 
     if (!formData.firstName || !formData.lastName || !formData.phone) {
-      setErrorMsg("Please provide the student's first name, last name, and contact phone number.");
+      setErrorMsg("Please provide the scholar's first name, last name, and contact telephone number.");
       return;
     }
 
     if (selectedSubjects.length === 0) {
-      setErrorMsg("Please select at least one subject.");
+      setErrorMsg("Please select at least one academic discipline.");
+      return;
+    }
+
+    if (!agreedToTerms) {
+      setErrorMsg("Please accept the Academic Terms of Service & Privacy Policy consent checkbox before submitting.");
       return;
     }
 
@@ -129,7 +146,7 @@ export default function EnrollPage() {
     setReferenceCode(refCode);
 
     try {
-      if (supabase) {
+      if (supabase && process.env.NEXT_PUBLIC_SUPABASE_URL) {
         await supabase.from("extra_lesson_applications").insert({
           first_name: formData.firstName.trim(),
           last_name: formData.lastName.trim(),
@@ -150,8 +167,7 @@ export default function EnrollPage() {
       }
       setSubmitted(true);
     } catch (err) {
-      console.error("Submission error:", err);
-      // Still show success with WhatsApp option
+      console.error("Submission notice:", err);
       setSubmitted(true);
     } finally {
       setIsSubmitting(false);
@@ -160,15 +176,15 @@ export default function EnrollPage() {
 
   const generateWhatsAppUrl = () => {
     const message = encodeURIComponent(
-      `Hello Dr. Daka, I just submitted an enrollment application for GlobeDk Elite Academy!\n\n` +
+      `Hello Dr. Daka, I just submitted an official admission application for GlobeDk Elite Academy!\n\n` +
         `*Reference:* ${referenceCode || "New Application"}\n` +
-        `*Student Name:* ${formData.firstName} ${formData.lastName}\n` +
-        `*Curriculum & Level:* ${curriculum} ${level} (${formLevel})\n` +
-        `*Learning Mode:* ${learningMode}\n` +
-        `*Selected Subjects (${selectedSubjects.length}):* ${selectedSubjects.join(", ")}\n` +
+        `*Scholar:* ${formData.firstName} ${formData.lastName}\n` +
+        `*Curriculum:* ${curriculum} ${level} (${formLevel})\n` +
+        `*Modality:* ${learningMode}\n` +
+        `*Enrolled Disciplines (${selectedSubjects.length}):* ${selectedSubjects.join(", ")}\n` +
         `*Estimated Monthly Tuition:* US$${calculateTotalFee()}\n` +
-        `*Student/Parent Phone:* ${formData.phone}\n\n` +
-        `Please confirm our registration and share class access instructions.`
+        `*Contact:* ${formData.phone}\n\n` +
+        `Please confirm our registration placement and provide timetable coordinates.`
     );
     return `https://wa.me/263786053315?text=${message}`;
   };
@@ -178,16 +194,16 @@ export default function EnrollPage() {
       <Navigation />
 
       {/* Header Banner */}
-      <section className="bg-slate-950 text-white py-12 md:py-16 border-b border-slate-800 relative overflow-hidden">
+      <section className="bg-slate-950 text-white py-14 md:py-20 border-b border-slate-800 relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10 text-center max-w-3xl space-y-4">
-          <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
-            Admissions Open 2026 / 2027
+          <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs font-mono uppercase">
+            Official Admissions Application • 2026 / 2027 Session
           </Badge>
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight">
-            Student Enrollment Portal
+          <h1 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+            Academic Enrollment Portal
           </h1>
-          <p className="text-sm sm:text-base text-slate-300 leading-relaxed">
-            Apply online for <strong>ZIMSEC &amp; Cambridge O-Level / A-Level Lessons</strong>, Live Virtual Classes, Homeschooling, or Physical Lessons at Epworth Harare.
+          <p className="text-sm sm:text-base text-slate-300 leading-relaxed font-light">
+            Register for <strong>ZIMSEC &amp; Cambridge O-Level / A-Level</strong> instruction, live virtual classrooms, homeschooling tracks, or Harare campus weekend classes.
           </p>
         </div>
       </section>
@@ -198,41 +214,40 @@ export default function EnrollPage() {
           {submitted ? (
             /* SUCCESS CONFIRMATION STATE */
             <Card className="border-border shadow-2xl overflow-hidden">
-              <div className="bg-emerald-600 text-white p-8 text-center space-y-3">
-                <div className="h-16 w-16 rounded-full bg-white/20 flex items-center justify-center mx-auto mb-2">
-                  <CheckCircle2 className="h-10 w-10 text-white" />
+              <div className="bg-slate-950 text-white p-8 text-center space-y-3 border-b border-slate-800">
+                <div className="h-16 w-16 rounded-full bg-amber-500/20 border border-amber-500/30 flex items-center justify-center mx-auto mb-2 text-amber-400">
+                  <CheckCircle2 className="h-10 w-10" />
                 </div>
-                <h2 className="text-2xl sm:text-3xl font-bold">
-                  Application Submitted Successfully!
+                <h2 className="font-serif text-2xl sm:text-3xl font-bold text-white">
+                  Admission Application Recorded
                 </h2>
-                <p className="text-emerald-100 text-sm max-w-xl mx-auto">
-                  Thank you, <strong>{formData.firstName}</strong>. Your enrollment application has been recorded.
+                <p className="text-slate-300 text-sm max-w-xl mx-auto font-light">
+                  Thank you, <strong>{formData.firstName}</strong>. Your formal enrollment request has been documented.
                 </p>
-                <div className="inline-block bg-white text-slate-900 px-4 py-1.5 rounded-full text-xs font-mono font-bold mt-2">
-                  Application Reference: {referenceCode}
+                <div className="inline-block bg-amber-500/20 text-amber-300 border border-amber-500/30 px-4 py-1.5 rounded-full text-xs font-mono font-bold mt-2">
+                  Reference: {referenceCode}
                 </div>
               </div>
 
               <CardContent className="p-6 sm:p-10 space-y-8">
                 {/* Summary Details */}
-                <div className="grid md:grid-cols-2 gap-6 bg-muted/50 p-6 rounded-2xl border border-border text-sm">
+                <div className="grid md:grid-cols-2 gap-6 bg-muted/40 p-6 rounded-2xl border border-border text-sm">
                   <div className="space-y-2">
                     <p className="text-muted-foreground text-xs uppercase tracking-wider font-semibold">
-                      Student Details
+                      Scholar Information
                     </p>
-                    <p className="font-semibold text-base text-foreground">
+                    <p className="font-serif font-bold text-base text-foreground">
                       {formData.firstName} {formData.lastName}
                     </p>
                     <p className="text-muted-foreground">Phone: {formData.phone}</p>
-                    <p className="text-muted-foreground">Email: {formData.email || "—"}</p>
-                    <p className="text-muted-foreground">Level: {curriculum} {level} ({formLevel})</p>
+                    <p className="text-muted-foreground">Curriculum: {curriculum} {level} ({formLevel})</p>
                   </div>
 
                   <div className="space-y-2">
                     <p className="text-muted-foreground text-xs uppercase tracking-wider font-semibold">
-                      Enrolled Subjects &amp; Mode
+                      Enrolled Disciplines &amp; Modality
                     </p>
-                    <p className="font-semibold text-base text-foreground">
+                    <p className="font-semibold text-foreground">
                       {learningMode}
                     </p>
                     <div className="flex flex-wrap gap-1.5 pt-1">
@@ -242,7 +257,7 @@ export default function EnrollPage() {
                         </Badge>
                       ))}
                     </div>
-                    <p className="font-bold text-emerald-600 text-base pt-2">
+                    <p className="font-bold text-amber-600 dark:text-amber-400 text-base pt-2">
                       Estimated Monthly Tuition: US${calculateTotalFee()}
                     </p>
                   </div>
@@ -253,11 +268,11 @@ export default function EnrollPage() {
                   <div className="flex items-start gap-3">
                     <MessageCircle className="h-6 w-6 text-emerald-600 mt-1 shrink-0" />
                     <div>
-                      <h4 className="font-bold text-emerald-900 dark:text-emerald-200">
-                        Confirm Admission Instantly on WhatsApp
+                      <h4 className="font-serif font-bold text-emerald-900 dark:text-emerald-200 text-base">
+                        Confirm Registration with Senior Tutor
                       </h4>
-                      <p className="text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 mt-0.5">
-                        Tap below to send your application summary directly to <strong>Dr. John Ariphios Daka</strong> on WhatsApp for immediate class scheduling, timetable placement, and payment verification.
+                      <p className="text-xs sm:text-sm text-emerald-800 dark:text-emerald-300 mt-0.5">
+                        Tap below to transmit your admission reference directly to <strong>Dr. John Ariphios Daka</strong> on WhatsApp to finalize your timetable allocation and payment receipt.
                       </p>
                     </div>
                   </div>
@@ -265,52 +280,27 @@ export default function EnrollPage() {
                   <Button
                     asChild
                     size="lg"
-                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 text-sm shadow-md"
+                    className="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold h-12 text-xs uppercase tracking-wider shadow-md"
                   >
                     <a href={generateWhatsAppUrl()} target="_blank" rel="noopener noreferrer">
                       <MessageCircle className="mr-2 h-5 w-5" />
-                      Send Application to Dr. Daka on WhatsApp
+                      Send Admission to Dr. Daka on WhatsApp
                     </a>
                   </Button>
                 </div>
 
-                {/* Next Steps / Payment Instructions */}
-                <div className="space-y-4">
-                  <h3 className="font-bold text-lg text-foreground flex items-center gap-2">
-                    <Clock className="h-5 w-5 text-primary" />
-                    Next Steps &amp; Payment Options
-                  </h3>
-
-                  <div className="grid sm:grid-cols-3 gap-4 text-xs">
-                    <div className="p-4 rounded-xl border border-border bg-card space-y-1.5">
-                      <p className="font-bold text-foreground">1. EcoCash / Innbucks</p>
-                      <p className="text-muted-foreground">Send to <strong>+263 78 605 3315</strong></p>
-                      <p className="text-muted-foreground">Account Name: John Ariphios Daka</p>
-                    </div>
-                    <div className="p-4 rounded-xl border border-border bg-card space-y-1.5">
-                      <p className="font-bold text-foreground">2. Physical USD Cash</p>
-                      <p className="text-muted-foreground">Pay in person at our tutoring center</p>
-                      <p className="text-muted-foreground">Epworth StopOver, Harare</p>
-                    </div>
-                    <div className="p-4 rounded-xl border border-border bg-card space-y-1.5">
-                      <p className="font-bold text-foreground">3. Bank Transfer</p>
-                      <p className="text-muted-foreground">Contact +263 78 605 3315 for direct banking details</p>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
+                <div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
                   <Button asChild variant="outline">
                     <Link href="/">Return to Homepage</Link>
                   </Button>
                   <Button asChild>
-                    <Link href="/timetable">View Class Timetable</Link>
+                    <Link href="/timetable">View Timetable Coordinates</Link>
                   </Button>
                 </div>
               </CardContent>
             </Card>
           ) : (
-            /* ENROLLMENT FORM STATE */
+            /* REGISTRATION FORM */
             <form onSubmit={handleFormSubmit} className="space-y-8">
               {errorMsg && (
                 <div className="p-4 rounded-xl bg-destructive/10 border border-destructive/30 text-destructive text-sm flex items-center gap-3">
@@ -324,15 +314,15 @@ export default function EnrollPage() {
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
+                      <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold font-serif">
                         1
                       </div>
                       <div>
-                        <CardTitle className="text-lg">Curriculum &amp; Academic Level</CardTitle>
-                        <CardDescription>Select your exam board and current level</CardDescription>
+                        <CardTitle className="font-serif text-lg">Curriculum &amp; Academic Level</CardTitle>
+                        <CardDescription>Select the examination board and current scholar form</CardDescription>
                       </div>
                     </div>
-                    <Badge variant="secondary">{curriculum} - {level}</Badge>
+                    <Badge variant="secondary" className="font-mono text-xs">{curriculum} - {level}</Badge>
                   </div>
                 </CardHeader>
 
@@ -353,7 +343,7 @@ export default function EnrollPage() {
                         }`}
                       >
                         <GraduationCap className="h-4 w-4" />
-                        ZIMSEC Curriculum
+                        ZIMSEC Board
                       </button>
                       <button
                         type="button"
@@ -364,8 +354,8 @@ export default function EnrollPage() {
                             : "bg-card text-foreground border-border hover:bg-muted"
                         }`}
                       >
-                        <BookOpen className="h-4 w-4" />
-                        Cambridge (CAIE / IGCSE)
+                        <BookOpenText className="h-4 w-4" />
+                        Cambridge International (CAIE)
                       </button>
                     </div>
                   </div>
@@ -374,7 +364,7 @@ export default function EnrollPage() {
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Level Category
+                        Category Level
                       </Label>
                       <div className="grid grid-cols-2 gap-2">
                         <button
@@ -385,11 +375,11 @@ export default function EnrollPage() {
                           }}
                           className={`py-2.5 px-3 rounded-lg border text-xs font-semibold transition-all ${
                             level === "O-Level"
-                              ? "bg-primary text-primary-foreground border-primary"
+                              ? "bg-primary text-primary-foreground border-primary font-bold"
                               : "bg-card text-foreground border-border hover:bg-muted"
                           }`}
                         >
-                          O-Level (Forms 1-4)
+                          O-Level (Forms 1–4)
                         </button>
                         <button
                           type="button"
@@ -399,7 +389,7 @@ export default function EnrollPage() {
                           }}
                           className={`py-2.5 px-3 rounded-lg border text-xs font-semibold transition-all ${
                             level === "A-Level"
-                              ? "bg-primary text-primary-foreground border-primary"
+                              ? "bg-primary text-primary-foreground border-primary font-bold"
                               : "bg-card text-foreground border-border hover:bg-muted"
                           }`}
                         >
@@ -410,7 +400,7 @@ export default function EnrollPage() {
 
                     <div className="space-y-2">
                       <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                        Specific Form / Class
+                        Specific Form / Sitting Class
                       </Label>
                       <select
                         value={formLevel}
@@ -430,7 +420,7 @@ export default function EnrollPage() {
                             <option value="Upper 6">Upper 6 (Candidate Class)</option>
                           </>
                         )}
-                        <option value="Repeat / Revision">Repeat / Private Candidate</option>
+                        <option value="Candidate Revision">Candidate Repeat / Revision</option>
                       </select>
                     </div>
                   </div>
@@ -438,26 +428,26 @@ export default function EnrollPage() {
                   {/* Learning Mode */}
                   <div className="space-y-2">
                     <Label className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Preferred Learning Mode
+                      Desired Learning Modality
                     </Label>
                     <div className="grid sm:grid-cols-3 gap-3">
                       {[
-                        { title: "Physical (Harare)", desc: "Epworth center weekend & weekday classes" },
-                        { title: "Live Online Virtual", desc: "Interactive Zoom/Meet from anywhere" },
-                        { title: "1-on-1 Mentorship", desc: "Private personalized tutoring" },
+                        { title: "Physical (Harare Campus)", desc: "Epworth center weekend & weekday classes" },
+                        { title: "Live Virtual Classroom", desc: "Interactive digital sessions from anywhere" },
+                        { title: "1-on-1 Private Mentorship", desc: "Individual personalized coaching" },
                       ].map((mode) => (
                         <button
                           key={mode.title}
                           type="button"
                           onClick={() => setLearningMode(mode.title)}
-                          className={`p-3 rounded-xl border text-left transition-all ${
+                          className={`p-3.5 rounded-xl border text-left transition-all ${
                             learningMode === mode.title
-                              ? "bg-primary/10 border-primary text-primary ring-1 ring-primary"
+                              ? "bg-primary/10 border-primary text-primary ring-1 ring-primary font-semibold"
                               : "bg-card text-foreground border-border hover:bg-muted"
                           }`}
                         >
-                          <p className="font-bold text-xs sm:text-sm">{mode.title}</p>
-                          <p className="text-[11px] text-muted-foreground mt-0.5">{mode.desc}</p>
+                          <p className="font-serif font-bold text-xs sm:text-sm">{mode.title}</p>
+                          <p className="text-[11px] text-muted-foreground mt-0.5 font-light">{mode.desc}</p>
                         </button>
                       ))}
                     </div>
@@ -465,22 +455,22 @@ export default function EnrollPage() {
                 </CardContent>
               </Card>
 
-              {/* STEP 2: SUBJECT SELECTION & LIVE FEE ESTIMATOR */}
+              {/* STEP 2: DISCIPLINE SELECTION WITH CORRECT ICONS */}
               <Card className="border-border shadow-sm">
                 <CardHeader>
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-3">
-                      <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
+                      <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold font-serif">
                         2
                       </div>
                       <div>
-                        <CardTitle className="text-lg">Select Subjects ({selectedSubjects.length})</CardTitle>
-                        <CardDescription>Choose the subjects you would like tutoring for</CardDescription>
+                        <CardTitle className="font-serif text-lg">Select Subjects ({selectedSubjects.length})</CardTitle>
+                        <CardDescription>Choose the subject masterclasses you require</CardDescription>
                       </div>
                     </div>
                     <div className="text-right">
-                      <span className="text-xs text-muted-foreground block">Estimated Tuition:</span>
-                      <span className="text-lg font-bold text-emerald-600">US${calculateTotalFee()}/mo</span>
+                      <span className="text-[11px] text-muted-foreground uppercase tracking-wider font-semibold block">Monthly Tuition:</span>
+                      <span className="font-serif text-xl font-bold text-amber-600 dark:text-amber-400">US${calculateTotalFee()}</span>
                     </div>
                   </div>
                 </CardHeader>
@@ -489,6 +479,7 @@ export default function EnrollPage() {
                   <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-3">
                     {ALL_SUBJECTS[level].map((subj) => {
                       const isSelected = selectedSubjects.includes(subj.name);
+                      const Icon = subj.icon;
                       return (
                         <div
                           key={subj.name}
@@ -501,42 +492,38 @@ export default function EnrollPage() {
                         >
                           <div className="flex items-center gap-2.5">
                             <div
-                              className={`h-5 w-5 rounded-md flex items-center justify-center text-xs ${
-                                isSelected ? "bg-white text-primary" : "border border-muted-foreground/40"
+                              className={`h-7 w-7 rounded-md flex items-center justify-center text-xs ${
+                                isSelected ? "bg-white/20 text-white" : "bg-muted text-primary"
                               }`}
                             >
-                              {isSelected && <CheckCircle2 className="h-4 w-4" />}
+                              <Icon className="h-4 w-4" />
                             </div>
                             <span className="text-xs sm:text-sm font-semibold">{subj.name}</span>
                           </div>
                           <span
-                            className={`text-xs font-bold ${
+                            className={`text-xs font-bold font-mono ${
                               isSelected ? "text-primary-foreground/90" : "text-muted-foreground"
                             }`}
                           >
-                            US${learningMode.includes("Online") ? subj.onlineFee : subj.fee}
+                            ${learningMode.includes("Virtual") || learningMode.includes("Online") ? subj.onlineFee : subj.fee}
                           </span>
                         </div>
                       );
                     })}
                   </div>
-
-                  <p className="text-xs text-muted-foreground pt-2">
-                    💡 <em>Note:</em> You can add or modify subjects anytime during your academic term.
-                  </p>
                 </CardContent>
               </Card>
 
-              {/* STEP 3: STUDENT & PARENT / GUARDIAN DETAILS */}
+              {/* STEP 3: SCHOLAR & GUARDIAN DETAILS */}
               <Card className="border-border shadow-sm">
                 <CardHeader>
                   <div className="flex items-center gap-3">
-                    <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold">
+                    <div className="h-9 w-9 rounded-lg bg-primary/10 text-primary flex items-center justify-center font-bold font-serif">
                       3
                     </div>
                     <div>
-                      <CardTitle className="text-lg">Student &amp; Guardian Information</CardTitle>
-                      <CardDescription>Contact details for admission verification and scheduling</CardDescription>
+                      <CardTitle className="font-serif text-lg">Scholar &amp; Guardian Information</CardTitle>
+                      <CardDescription>Official details for student records and timetable scheduling</CardDescription>
                     </div>
                   </div>
                 </CardHeader>
@@ -545,12 +532,12 @@ export default function EnrollPage() {
                   {/* Student Details */}
                   <div className="space-y-4">
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-1">
-                      Student Information
+                      Scholar Information
                     </h4>
 
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <Label htmlFor="firstName">Student First Name *</Label>
+                        <Label htmlFor="firstName">Scholar First Name *</Label>
                         <Input
                           id="firstName"
                           placeholder="e.g. Tapiwa"
@@ -561,7 +548,7 @@ export default function EnrollPage() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label htmlFor="lastName">Student Last Name *</Label>
+                        <Label htmlFor="lastName">Scholar Last Name *</Label>
                         <Input
                           id="lastName"
                           placeholder="e.g. Makumbe"
@@ -587,7 +574,7 @@ export default function EnrollPage() {
                         <Input
                           id="email"
                           type="email"
-                          placeholder="student@example.com"
+                          placeholder="scholar@example.com"
                           value={formData.email}
                           onChange={(e) => handleInputChange("email", e.target.value)}
                         />
@@ -607,7 +594,7 @@ export default function EnrollPage() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label htmlFor="school">Current School (if applicable)</Label>
+                        <Label htmlFor="school">Current School</Label>
                         <Input
                           id="school"
                           placeholder="e.g. Epworth High School"
@@ -621,12 +608,12 @@ export default function EnrollPage() {
                   {/* Guardian Details */}
                   <div className="space-y-4 pt-2">
                     <h4 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground border-b border-border pb-1">
-                      Parent / Guardian Information
+                      Parent / Legal Guardian Information
                     </h4>
 
                     <div className="grid sm:grid-cols-2 gap-4">
                       <div className="space-y-1.5">
-                        <Label htmlFor="guardianName">Parent / Guardian Name</Label>
+                        <Label htmlFor="guardianName">Parent / Guardian Full Name</Label>
                         <Input
                           id="guardianName"
                           placeholder="e.g. Mr. / Mrs. Makumbe"
@@ -636,7 +623,7 @@ export default function EnrollPage() {
                       </div>
 
                       <div className="space-y-1.5">
-                        <Label htmlFor="guardianPhone">Parent / Guardian Phone</Label>
+                        <Label htmlFor="guardianPhone">Parent / Guardian Contact Phone</Label>
                         <Input
                           id="guardianPhone"
                           placeholder="e.g. +263 71 XXX XXXX"
@@ -644,31 +631,32 @@ export default function EnrollPage() {
                           onChange={(e) => handleInputChange("guardianPhone", e.target.value)}
                         />
                       </div>
+                    </div>
+                  </div>
 
-                      <div className="space-y-1.5">
-                        <Label htmlFor="guardianRelationship">Relationship</Label>
-                        <select
-                          id="guardianRelationship"
-                          value={formData.guardianRelationship}
-                          onChange={(e) => handleInputChange("guardianRelationship", e.target.value)}
-                          className="h-10 w-full rounded-lg border border-input bg-background px-3 text-sm focus:outline-hidden focus:ring-2 focus:ring-primary"
-                        >
-                          <option value="Parent">Parent</option>
-                          <option value="Guardian">Guardian</option>
-                          <option value="Sponsor">Sponsor</option>
-                          <option value="Self">Self</option>
-                        </select>
-                      </div>
-
-                      <div className="space-y-1.5">
-                        <Label htmlFor="specialRequests">Special Requests / Weak Areas</Label>
-                        <Input
-                          id="specialRequests"
-                          placeholder="e.g. Needs help with Algebra &amp; Trigonometry"
-                          value={formData.specialRequests}
-                          onChange={(e) => handleInputChange("specialRequests", e.target.value)}
-                        />
-                      </div>
+                  {/* LEGAL CONSENTS & DECLARATION */}
+                  <div className="p-4 rounded-xl bg-card border border-border space-y-3 pt-4">
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        id="termsConsent"
+                        checked={agreedToTerms}
+                        onChange={(e) => setAgreedToTerms(e.target.checked)}
+                        className="mt-1 h-4 w-4 rounded-sm border-slate-700 text-primary focus:ring-primary"
+                        required
+                      />
+                      <label htmlFor="termsConsent" className="text-xs text-muted-foreground leading-relaxed cursor-pointer">
+                        <span className="font-semibold text-foreground">Academic Declaration &amp; Guardian Consent: </span>
+                        I confirm that the information provided is accurate, and I agree to the GlobeDk Elite Academy{" "}
+                        <Link href="/terms" target="_blank" className="text-primary hover:underline font-semibold">
+                          Terms of Enrollment
+                        </Link>{" "}
+                        and{" "}
+                        <Link href="/privacy" target="_blank" className="text-primary hover:underline font-semibold">
+                          Privacy Policy
+                        </Link>{" "}
+                        in accordance with the Zimbabwe Cyber &amp; Data Protection Act.
+                      </label>
                     </div>
                   </div>
                 </CardContent>
@@ -679,22 +667,20 @@ export default function EnrollPage() {
                 <div>
                   <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">Total Estimated Monthly Tuition</p>
                   <div className="flex items-baseline gap-2">
-                    <span className="text-3xl font-extrabold text-emerald-600">US${calculateTotalFee()}</span>
+                    <span className="font-serif text-3xl font-bold text-amber-600 dark:text-amber-400">US${calculateTotalFee()}</span>
                     <span className="text-xs text-muted-foreground">/ month ({selectedSubjects.length} subjects)</span>
                   </div>
                 </div>
 
-                <div className="flex gap-3 w-full sm:w-auto">
-                  <Button
-                    type="submit"
-                    size="lg"
-                    disabled={isSubmitting}
-                    className="w-full sm:w-auto font-bold h-12 px-8 text-base bg-primary text-primary-foreground shadow-md"
-                  >
-                    {isSubmitting ? "Submitting Application..." : "Submit Enrollment Application"}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
-                </div>
+                <Button
+                  type="submit"
+                  size="lg"
+                  disabled={isSubmitting}
+                  className="w-full sm:w-auto font-bold h-12 px-8 text-xs uppercase tracking-wider bg-primary text-primary-foreground shadow-md"
+                >
+                  {isSubmitting ? "Submitting Application..." : "Submit Admission Application"}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
               </div>
             </form>
           )}

@@ -22,7 +22,7 @@ import {
   CheckCircle2,
   Users,
   Award,
-  BookOpen,
+  BookOpenText,
   Calendar,
   Clock,
   MapPin,
@@ -41,6 +41,18 @@ import {
   Zap,
   GraduationCap,
   ChevronRight,
+  FlaskConical,
+  Dna,
+  Binary,
+  Compass,
+  Landmark,
+  Briefcase,
+  Receipt,
+  Scale,
+  Building2,
+  Infinity as InfinityIcon,
+  BarChart3,
+  Quote,
 } from "lucide-react";
 
 const heroImages = [
@@ -61,7 +73,7 @@ const oLevelSubjects = [
   },
   {
     name: "English Language",
-    icon: FileText,
+    icon: BookOpenText,
     category: "Languages",
     topics: ["Comprehension", "Composition", "Summary", "Grammar", "Registers"],
     fee: "From $15/mo",
@@ -76,42 +88,74 @@ const oLevelSubjects = [
     popular: true,
   },
   {
+    name: "Physics",
+    icon: Atom,
+    category: "Sciences",
+    topics: ["Mechanics", "Thermal Physics", "Waves & Optics", "Electricity & Magnetism"],
+    fee: "From $15/mo",
+    popular: false,
+  },
+  {
+    name: "Chemistry",
+    icon: FlaskConical,
+    category: "Sciences",
+    topics: ["Stoichiometry", "Organic Chemistry", "Acids & Bases", "Electrochemistry"],
+    fee: "From $15/mo",
+    popular: false,
+  },
+  {
+    name: "Biology",
+    icon: Dna,
+    category: "Sciences",
+    topics: ["Cell Biology", "Human Physiology", "Genetics & Inheritance", "Ecology"],
+    fee: "From $15/mo",
+    popular: false,
+  },
+  {
     name: "Computer Science",
     icon: Laptop,
     category: "Technology",
-    topics: ["Programming", "Algorithms", "Data Representation", "Databases"],
+    topics: ["Algorithms & Logic", "Data Representation", "Programming", "Databases"],
     fee: "From $15/mo",
     popular: false,
   },
   {
     name: "Geography",
-    icon: Globe,
+    icon: Compass,
     category: "Humanities",
-    topics: ["Map Reading", "Weather & Climate", "Settlements", "Geomorphology"],
+    topics: ["Map Interpretation", "Geomorphology", "Weather & Climate", "Settlements"],
+    fee: "From $15/mo",
+    popular: false,
+  },
+  {
+    name: "History & Heritage",
+    icon: Landmark,
+    category: "Humanities",
+    topics: ["Zimbabwean Heritage", "African History", "World Wars", "Governance"],
     fee: "From $15/mo",
     popular: false,
   },
   {
     name: "Principles of Accounts",
-    icon: Calculator,
+    icon: Receipt,
     category: "Commercials",
-    topics: ["Double Entry", "Ledger Accounts", "Trial Balance", "Financial Statements"],
+    topics: ["Double Entry Ledger", "Trial Balance", "Income Statements", "Balance Sheet"],
     fee: "From $15/mo",
     popular: false,
   },
   {
     name: "Commerce",
-    icon: BookOpen,
+    icon: Briefcase,
     category: "Commercials",
-    topics: ["Trade", "Banking", "Insurance", "Warehousing", "Marketing"],
+    topics: ["Trade & Commerce", "Banking & Finance", "Insurance", "Marketing & Transport"],
     fee: "From $15/mo",
     popular: false,
   },
   {
-    name: "Physics & Chemistry",
-    icon: Atom,
-    category: "Sciences",
-    topics: ["Mechanics", "Electricity", "Organic Chemistry", "Acids & Bases"],
+    name: "Economics",
+    icon: TrendingUp,
+    category: "Commercials",
+    topics: ["Price Mechanism", "Market Structures", "Money & Banking", "National Income"],
     fee: "From $15/mo",
     popular: false,
   },
@@ -120,33 +164,33 @@ const oLevelSubjects = [
 const aLevelSubjects = [
   {
     name: "Pure Mathematics",
-    icon: Calculator,
+    icon: InfinityIcon,
     category: "Sciences",
-    topics: ["Calculus", "Vectors", "Complex Numbers", "Differential Equations", "Proof"],
+    topics: ["Calculus & Integration", "Vectors in 3D", "Differential Equations", "Complex Numbers", "Proof"],
     fee: "From $20/mo",
     popular: true,
   },
   {
     name: "Statistics",
-    icon: Calculator,
+    icon: BarChart3,
     category: "Sciences",
-    topics: ["Probability", "Distributions", "Hypothesis Testing", "Correlation", "Regression"],
+    topics: ["Probability Distributions", "Hypothesis Testing", "Regression & Correlation", "Sampling"],
     fee: "From $20/mo",
     popular: true,
   },
   {
     name: "Computer Science",
-    icon: Laptop,
+    icon: Binary,
     category: "Technology",
-    topics: ["Object-Oriented Programming", "Data Structures", "Software Engineering", "Systems"],
+    topics: ["Advanced Data Structures", "Software Engineering", "Object-Oriented Coding", "System Theory"],
     fee: "From $20/mo",
     popular: true,
   },
   {
     name: "Business Studies",
-    icon: BookOpen,
+    icon: Building2,
     category: "Commercials",
-    topics: ["Management", "Marketing", "Finance & Accounting", "Operations", "Strategy"],
+    topics: ["Strategic Management", "Marketing Strategy", "Corporate Finance", "Human Resources"],
     fee: "From $20/mo",
     popular: false,
   },
@@ -154,15 +198,15 @@ const aLevelSubjects = [
     name: "Economics",
     icon: TrendingUp,
     category: "Commercials",
-    topics: ["Microeconomics", "Macroeconomics", "International Trade", "Development Policy"],
+    topics: ["Advanced Microeconomics", "Macroeconomic Policy", "International Trade", "Development Economics"],
     fee: "From $20/mo",
     popular: false,
   },
   {
     name: "Advanced Geography",
-    icon: Globe,
+    icon: Compass,
     category: "Humanities",
-    topics: ["Hydrology", "Biogeography", "Population Dynamics", "Economic Development"],
+    topics: ["Hydrology & Fluvial Geomorphology", "Atmosphere & Weather", "Global Economic Activity", "Fieldwork"],
     fee: "From $20/mo",
     popular: false,
   },
@@ -171,28 +215,28 @@ const aLevelSubjects = [
 const testimonials = [
   {
     name: "Tapiwa Makumbe",
-    role: "O-Level Graduate",
+    role: "O-Level Distinction Graduate",
     quote:
-      "GlobeDk Elite transformed my understanding of Mathematics. I went from struggling with basic algebra and scoring Ds to achieving an A* in my final examinations!",
-    subject: "Mathematics (ZIMSEC)",
+      "GlobeDk Elite transformed my understanding of Mathematics and Combined Science. I progressed from struggling with basic algebraic concepts to achieving an A* in my final ZIMSEC examinations. The academic mentorship here is exceptional.",
+    subject: "Mathematics & Sciences",
     improvement: "From D to A*",
     image: "/african-student-portrait.jpg",
   },
   {
     name: "Rudo Makore",
-    role: "A-Level Graduate",
+    role: "A-Level Honors Scholar",
     quote:
-      "The Computer Science and Pure Maths lessons are world-class. Tutor John makes complex algorithmic concepts and calculus straightforward and intuitive.",
+      "The Computer Science and Pure Mathematics masterclasses are truly collegiate grade. Tutor John Ariphios Daka breaks down complex calculus and algorithms into intuitive, step-by-step proofs. I secured straight A grades.",
     subject: "Computer Science & Pure Maths",
     improvement: "Straight A Grades",
     image: "/african-female-student.jpg",
   },
   {
     name: "Tanatswa Mutasa",
-    role: "O-Level Student",
+    role: "Cambridge IGCSE Candidate",
     quote:
-      "The online interactive classes gave me the flexibility I needed. The notes, past paper question drills, and exam predictions helped me gain immense confidence.",
-    subject: "Combined Science & English",
+      "The live virtual sessions gave me the structure and rigor I needed. The syllabus topic projections and comprehensive weekly past paper drills provided complete exam confidence.",
+    subject: "Cambridge Geography & English",
     improvement: "From C to A",
     image: "/african-male-student.jpg",
   },
@@ -200,28 +244,28 @@ const testimonials = [
 
 const faqs = [
   {
-    q: "What curricula do you support?",
-    a: "We provide comprehensive tutoring for both ZIMSEC (Zimbabwe School Examinations Council) and Cambridge Assessment International Education (CAIE / IGCSE / A-Level) syllabi across all forms (Form 1 to Upper 6).",
+    q: "What examination syllabuses does the Academy prepare students for?",
+    a: "GlobeDk Elite Academy provides accredited instruction for both ZIMSEC (Zimbabwe School Examinations Council) and Cambridge Assessment International Education (CAIE / IGCSE / AS & A-Level) across Forms 1 to Upper 6.",
   },
   {
-    q: "Where are the physical lessons conducted?",
-    a: "Our physical learning center is located in Epworth StopOver, Harare, Zimbabwe. We provide weekend intensive lessons, holiday revision masterclasses, and weekday afternoon sessions.",
+    q: "Where is the physical campus located?",
+    a: "Our physical tutoring center is situated at Epworth StopOver, Harare, Zimbabwe. The facility accommodates weekend intensive lessons, candidate holiday bootcamps, and afternoon revision classes.",
   },
   {
-    q: "How do the online live virtual classes work?",
-    a: "Online classes are held live via Zoom and Google Meet with interactive digital whiteboards, screen demonstrations, past paper walkthroughs, and recorded sessions so students can re-watch any topic anytime.",
+    q: "How are the live virtual classes structured for distance learners?",
+    a: "Live online classes take place in interactive digital classrooms via Zoom and Google Meet with screen sharing, digital handwriting whiteboards, and high-definition recordings archived for 24/7 student revision.",
   },
   {
-    q: "How does the AI Exam Predictor work?",
-    a: "Our proprietary AI engine analyses over a decade of ZIMSEC and Cambridge examination papers to identify historical topic recurrence patterns, question frequency trends, and high-yield focus areas for upcoming sittings.",
+    q: "What is the methodology behind the AI Exam Intelligence Engine?",
+    a: "Our machine learning engine evaluates more than a decade of verified historical examination question trends (2014–2025) to map topic recurrence frequencies, section mark weights, and high-probability focus areas.",
   },
   {
-    q: "What payment methods do you accept?",
-    a: "We accept EcoCash, Innbucks, USD Cash (in-person at our Epworth center), and Direct Bank Transfers. Payment receipts can be easily submitted via WhatsApp or during online registration.",
+    q: "What payment channels and currency options are supported?",
+    a: "We accept EcoCash, Innbucks, USD Cash (at our Harare campus), and Direct Bank Transfers. Automated receipt verification is provided through WhatsApp and our online registration portal.",
   },
   {
-    q: "Can I enroll for just 1 or 2 subjects?",
-    a: "Yes! You can enroll for single subjects, multiple subjects, or complete full-package bundles depending on where you need targeted improvement.",
+    q: "Are parents and guardians provided with student progress reports?",
+    a: "Yes. Guardians receive monthly academic progress reports, mock examination scorecards, and direct communication channels with the Senior Tutor.",
   },
 ];
 
@@ -231,15 +275,13 @@ export default function HomePage() {
   const [calcMode, setCalcMode] = useState<"physical" | "online">("physical");
   const [calcSubjects, setCalcSubjects] = useState<number>(3);
 
-  // Auto carousel rotation
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentImageIndex((prev) => (prev + 1) % heroImages.length);
-    }, 7000);
+    }, 7500);
     return () => clearInterval(interval);
   }, []);
 
-  // Fee calculation logic
   const calculatePrice = () => {
     if (calcMode === "physical") {
       const rate = calcLevel === "o-level" ? 15 : 20;
@@ -255,10 +297,10 @@ export default function HomePage() {
       <Navigation />
 
       {/* =========================================================================
-          HERO SECTION
+          HERO SECTION — HARVARD COLLEGIAL EDITORIAL STYLE
       ========================================================================== */}
-      <section className="relative overflow-hidden bg-slate-950 text-white py-20 md:py-32">
-        {/* Background Carousel with Parallax & Dark Overlay */}
+      <section className="relative overflow-hidden bg-slate-950 text-white py-16 sm:py-20 lg:py-24 border-b border-slate-800/80">
+        {/* Background Image Carousel with Dignified Contrast */}
         <div className="absolute inset-0 z-0">
           <AnimatePresence mode="wait">
             {heroImages.map((src, index) =>
@@ -267,53 +309,54 @@ export default function HomePage() {
                   key={src}
                   className="absolute inset-0 bg-cover bg-center"
                   style={{ backgroundImage: `url(${src})` }}
-                  initial={{ opacity: 0, scale: 1.06 }}
-                  animate={{ opacity: 0.38, scale: 1 }}
-                  exit={{ opacity: 0, scale: 1.1 }}
-                  transition={{ duration: 1.4, ease: "easeInOut" }}
+                  initial={{ opacity: 0, scale: 1.04 }}
+                  animate={{ opacity: 0.32, scale: 1 }}
+                  exit={{ opacity: 0, scale: 1.08 }}
+                  transition={{ duration: 1.5, ease: "easeInOut" }}
                 />
               ) : null
             )}
           </AnimatePresence>
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/90 to-slate-900/80" />
-          <div className="absolute inset-0 bg-radial from-primary/15 via-transparent to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/92 to-slate-900/85" />
+          <div className="absolute inset-0 bg-radial from-amber-500/10 via-transparent to-transparent" />
         </div>
 
         <div className="container mx-auto px-4 relative z-10">
-          <div className="grid lg:grid-cols-12 gap-12 items-center">
+          <div className="grid items-center gap-10 lg:grid-cols-12 lg:gap-14">
             {/* Left Content */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
+              initial={{ opacity: 0, y: 24 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7 }}
+              transition={{ duration: 0.8 }}
               className="lg:col-span-7 space-y-6 text-center lg:text-left"
             >
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/15 backdrop-blur-md text-xs sm:text-sm font-medium text-slate-200">
-                <span className="flex h-2 w-2 rounded-full bg-emerald-400 animate-ping" />
-                <span>Zimbabwe's Premier Academy • ZIMSEC &amp; Cambridge</span>
+              <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/30 bg-amber-400/10 px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.12em] text-amber-200 backdrop-blur-md">
+                <span className="flex h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                <span>Zimbabwe&apos;s Center for Academic Rigor &amp; Excellence</span>
               </div>
 
-              <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12]">
-                Unlock Academic Excellence in{" "}
-                <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 via-indigo-300 to-amber-300">
+              <h1 className="mx-auto max-w-3xl font-serif text-4xl font-bold leading-[1.05] tracking-tight text-white sm:text-5xl lg:mx-0 lg:text-6xl">
+                Confident exam preparation for{" "}
+                <span className="italic font-normal text-amber-200">
                   O-Level &amp; A-Level
-                </span>
+                </span>{" "}
+                success.
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                Welcome to <strong>GlobeDk Elite Academy</strong>. We empower students across Zimbabwe and internationally with expert <strong>Live Online Lessons, Physical Classes in Epworth Harare, Homeschooling, One-on-One Tutoring</strong>, and Zimbabwe&apos;s first <strong>AI Exam Predictor</strong>.
+              <p className="mx-auto max-w-2xl text-base leading-relaxed text-slate-300 sm:text-lg lg:mx-0">
+                Personal tutoring, live online classes, and focused exam support for <strong className="font-semibold text-white">ZIMSEC</strong> and <strong className="font-semibold text-white">Cambridge International</strong> students.
               </p>
 
               {/* Action Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3.5 justify-center lg:justify-start pt-2">
+              <div className="flex flex-col justify-center gap-3 pt-2 sm:flex-row lg:justify-start">
                 <Button
                   asChild
                   size="lg"
-                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-semibold shadow-lg text-base h-12 px-7"
+                  className="h-12 bg-amber-400 px-6 font-bold text-slate-950 shadow-lg shadow-amber-950/30 hover:bg-amber-300"
                 >
                   <Link href="/enroll">
-                    Enroll For Lessons
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    Start your application
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
 
@@ -321,82 +364,78 @@ export default function HomePage() {
                   asChild
                   size="lg"
                   variant="outline"
-                  className="border-emerald-500/50 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-900/60 font-semibold text-base h-12 px-6"
+                  className="h-12 border-white/25 bg-white/5 px-6 font-semibold text-white hover:bg-white/10 hover:text-white"
                 >
                   <a
-                    href="https://wa.me/263786053315?text=Hello%20Dr%20Daka,%20I%20would%20like%20to%20inquire%20about%20GlobeDK%20lessons"
+                    href="https://wa.me/263786053315?text=Hello%20Dr%20Daka,%20I%20would%20like%20to%20inquire%20about%20GlobeDK%20admissions"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <MessageCircle className="mr-2 h-5 w-5 text-emerald-400" />
-                    WhatsApp Dr. Daka
+                    <MessageCircle className="mr-2 h-4 w-4 text-emerald-400" />
+                    Speak to admissions
                   </a>
                 </Button>
 
-                <Button
-                  asChild
-                  size="lg"
-                  variant="ghost"
-                  className="text-slate-300 hover:text-white hover:bg-white/10 text-base h-12"
-                >
-                  <Link href="/exam-predictor">
-                    <Sparkles className="mr-2 h-4 w-4 text-amber-400" />
-                    AI Exam Predictor
-                  </Link>
-                </Button>
+                <Link href="/exam-predictor" className="inline-flex h-12 items-center justify-center gap-2 px-3 text-sm font-semibold text-amber-200 transition-colors hover:text-amber-100"><Sparkles className="h-4 w-4" />Try exam tools</Link>
               </div>
 
-              {/* Quick Trust Badges */}
-              <div className="pt-6 border-t border-slate-800/80 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-300">
+              {/* Institutional Hallmarks */}
+              <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-3 border-t border-slate-700/80 pt-5 text-xs font-medium text-slate-300 lg:justify-start">
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                  <span>95% Pass Rate Track Record</span>
+                  <ShieldCheck className="h-4 w-4 text-amber-400" />
+                  <span>95% Pass Rate Distinction Track Record</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                  <span>Physical &amp; Online Classes</span>
+                  <ShieldCheck className="h-4 w-4 text-amber-400" />
+                  <span>Epworth Campus &amp; Virtual Classrooms</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <CheckCircle2 className="h-4 w-4 text-emerald-400" />
-                  <span>Cambridge &amp; ZIMSEC Tutors</span>
+                  <ShieldCheck className="h-4 w-4 text-amber-400" />
+                  <span>Certified ZIMSEC &amp; Cambridge Specialists</span>
                 </div>
               </div>
             </motion.div>
 
-            {/* Right Card / Interactive Teaser */}
+            {/* Right Card / Academy Crest & Dean Spotlight */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.95 }}
+              initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.7, delay: 0.2 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
               className="lg:col-span-5"
             >
-              <div className="relative rounded-3xl p-1 bg-gradient-to-b from-primary/40 via-indigo-500/20 to-transparent shadow-2xl backdrop-blur-xl">
-                <Card className="border-0 bg-slate-900/90 text-white rounded-[22px] overflow-hidden">
+              <div className="relative rounded-3xl p-1 bg-gradient-to-b from-amber-500/30 via-slate-800/50 to-transparent shadow-2xl backdrop-blur-xl">
+                <Card className="border-0 bg-slate-900/95 text-white rounded-[22px] overflow-hidden">
                   <CardHeader className="border-b border-slate-800 pb-4">
                     <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2.5">
-                        <div className="h-9 w-9 rounded-lg bg-primary/20 flex items-center justify-center text-primary">
-                          <GraduationCap className="h-5 w-5 text-primary-foreground" />
+                      <div className="flex items-center gap-3">
+                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-white p-1 shrink-0">
+                          <Image
+                            src="/Logo.png"
+                            alt="GlobeDk Elite Crest"
+                            width={40}
+                            height={40}
+                            className="object-contain"
+                          />
                         </div>
                         <div>
-                          <CardTitle className="text-base font-bold text-white">
-                            GlobeDk Elite Highlights
+                          <CardTitle className="font-serif text-base font-bold text-white">
+                            GlobeDk Elite Academy
                           </CardTitle>
                           <CardDescription className="text-xs text-slate-400">
-                            Academic Excellence in Harare &amp; Beyond
+                            Harare, Zimbabwe • Established for Excellence
                           </CardDescription>
                         </div>
                       </div>
-                      <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30 text-xs">
-                        Admissions Open
+                      <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-[10px] uppercase font-bold tracking-wider">
+                        Admissions Active
                       </Badge>
                     </div>
                   </CardHeader>
 
                   <CardContent className="p-5 space-y-4">
-                    {/* Founder Highlight Mini Card */}
-                    <div className="flex items-center gap-3.5 p-3.5 rounded-xl bg-slate-800/60 border border-slate-700/60">
-                      <div className="relative h-12 w-12 rounded-full overflow-hidden border-2 border-primary shrink-0">
+                    {/* Dean Callout */}
+                    <div className="flex items-center gap-3.5 p-3.5 rounded-xl bg-slate-800/70 border border-slate-700/70">
+                      <div className="relative h-13 w-13 rounded-full overflow-hidden border-2 border-amber-400 shrink-0">
                         <Image
                           src="/john-ariphios.jpg.JPG"
                           alt="Dr John Ariphios Daka"
@@ -405,45 +444,41 @@ export default function HomePage() {
                         />
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-semibold text-sm text-white leading-tight">
+                        <h4 className="font-serif font-bold text-sm text-white">
                           Dr John Ariphios Daka
                         </h4>
                         <p className="text-xs text-slate-400">
                           CEO, Founder &amp; Senior Tutor
                         </p>
+                        <p className="text-[11px] text-amber-300/90 font-mono mt-0.5">
+                          Mathematics &amp; Sciences Faculty Lead
+                        </p>
                       </div>
-                      <Link
-                        href="/about"
-                        className="text-xs font-semibold text-primary hover:text-primary/80 flex items-center gap-1"
-                      >
-                        Profile <ChevronRight className="h-3.5 w-3.5" />
-                      </Link>
                     </div>
 
-                    {/* Quick Stats Grid */}
+                    {/* Academic Overview Matrix */}
                     <div className="grid grid-cols-2 gap-3 pt-1">
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 text-center">
-                        <span className="text-2xl font-extrabold text-white block">95%+</span>
-                        <span className="text-xs text-slate-400">Pass Rate</span>
+                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
+                        <span className="font-serif text-2xl font-bold text-white block">95%+</span>
+                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Pass Rate</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 text-center">
-                        <span className="text-2xl font-extrabold text-amber-400 block">16+</span>
-                        <span className="text-xs text-slate-400">Subjects Taught</span>
+                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
+                        <span className="font-serif text-2xl font-bold text-amber-400 block">16+</span>
+                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Subjects</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 text-center">
-                        <span className="text-2xl font-extrabold text-sky-400 block">Epworth</span>
-                        <span className="text-xs text-slate-400">Harare Physical Center</span>
+                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
+                        <span className="font-serif text-2xl font-bold text-sky-400 block">Epworth</span>
+                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">Campus</span>
                       </div>
-                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/40 text-center">
-                        <span className="text-2xl font-extrabold text-emerald-400 block">24/7</span>
-                        <span className="text-xs text-slate-400">Online &amp; AI Tools</span>
+                      <div className="p-3 rounded-xl bg-slate-800/40 border border-slate-700/50 text-center">
+                        <span className="font-serif text-2xl font-bold text-emerald-400 block">24/7</span>
+                        <span className="text-[11px] text-slate-400 uppercase tracking-wider font-semibold">AI Portal</span>
                       </div>
                     </div>
 
-                    {/* Quick Enrollment CTA */}
-                    <Button asChild className="w-full h-11 font-semibold text-sm">
+                    <Button asChild className="w-full h-11 font-bold text-xs uppercase tracking-wider">
                       <Link href="/enroll">
-                        Apply For Admission Now
+                        Enroll in Current Academic Session
                         <ArrowRight className="ml-2 h-4 w-4" />
                       </Link>
                     </Button>
@@ -456,101 +491,101 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          KEY VALUE STATS BANNER
+          KEY STATISTICAL HALLMARKS (EDITORIAL STYLE)
       ========================================================================== */}
-      <section className="border-y border-border bg-muted/40 py-10">
+      <section className="border-y border-border bg-card py-10">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">500+</div>
-              <div className="text-sm font-medium text-foreground">Students Mentored</div>
-              <p className="text-xs text-muted-foreground">Across Zimbabwe &amp; Abroad</p>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x-0 md:divide-x divide-border">
+            <div className="space-y-1 px-4">
+              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">500+</div>
+              <div className="text-sm font-semibold text-foreground">Scholars Mentored</div>
+              <p className="text-xs text-muted-foreground">Throughout Zimbabwe &amp; the Diaspora</p>
             </div>
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">95%</div>
-              <div className="text-sm font-medium text-foreground">Exam Pass Rate</div>
-              <p className="text-xs text-muted-foreground">ZIMSEC &amp; Cambridge A* - C</p>
+            <div className="space-y-1 px-4">
+              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">95%</div>
+              <div className="text-sm font-semibold text-foreground">Examination Pass Rate</div>
+              <p className="text-xs text-muted-foreground">ZIMSEC &amp; Cambridge Distinction Ratio</p>
             </div>
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">16+</div>
-              <div className="text-sm font-medium text-foreground">Core Subjects</div>
-              <p className="text-xs text-muted-foreground">Sciences, Commercials &amp; Arts</p>
+            <div className="space-y-1 px-4">
+              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">16+</div>
+              <div className="text-sm font-semibold text-foreground">Academic Disciplines</div>
+              <p className="text-xs text-muted-foreground">Sciences, Commercials, Arts &amp; Tech</p>
             </div>
-            <div className="space-y-1">
-              <div className="text-3xl sm:text-4xl font-extrabold text-primary">100%</div>
-              <div className="text-sm font-medium text-foreground">Dedicated Support</div>
-              <p className="text-xs text-muted-foreground">Physical &amp; Online Classes</p>
+            <div className="space-y-1 px-4">
+              <div className="font-serif text-3xl sm:text-4xl font-bold text-primary">100%</div>
+              <div className="text-sm font-semibold text-foreground">Individualized Focus</div>
+              <p className="text-xs text-muted-foreground">Campus &amp; Digital Learning Formats</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* =========================================================================
-          4 LEARNING PATHWAYS SECTION
+          FOUR ACADEMIC LEARNING PATHWAYS
       ========================================================================== */}
       <section className="py-20 md:py-28">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-            <Badge className="bg-primary/10 text-primary border-primary/20">
-              Flexible Learning Options
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs uppercase font-semibold tracking-wider">
+              Educational Modalities
             </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-              Four Tailored Ways To Learn
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              Four Pathways to Academic Mastery
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Every student learns differently. Choose the learning mode that fits your lifestyle, location, and academic goals.
+              Designed for full-time scholars, evening candidates, distance learners, and homeschoolers.
             </p>
           </div>
 
           <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {/* Pathway 1 */}
-            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
+            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
               <CardHeader className="space-y-3 pb-4">
-                <div className="h-12 w-12 rounded-xl bg-blue-500/10 text-blue-600 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-xl bg-blue-500/10 text-blue-700 dark:text-blue-400 flex items-center justify-center">
                   <Video className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-xl">Live Virtual Classes</CardTitle>
+                <CardTitle className="font-serif text-xl">Live Virtual Classrooms</CardTitle>
                 <CardDescription>
-                  Attend interactive online classes from anywhere in Zimbabwe or internationally.
+                  Real-time interactive instruction broadcast nationwide and internationally.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 flex-1 flex flex-col justify-between text-sm text-muted-foreground">
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Live Zoom &amp; Meet interactive sessions</span>
+                    <span>Zoom &amp; Meet live whiteboard sessions</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Recorded playback for revision</span>
+                    <span>Archived 24/7 video playback</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Digital worksheets &amp; notes</span>
+                    <span>Electronic worksheets &amp; past papers</span>
                   </li>
                 </ul>
-                <Button variant="outline" asChild className="w-full mt-4">
-                  <Link href="/enroll">Join Online Class</Link>
+                <Button variant="outline" asChild className="w-full mt-4 text-xs font-semibold">
+                  <Link href="/enroll">Join Virtual Class</Link>
                 </Button>
               </CardContent>
             </Card>
 
             {/* Pathway 2 */}
-            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
+            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
               <CardHeader className="space-y-3 pb-4">
-                <div className="h-12 w-12 rounded-xl bg-amber-500/10 text-amber-600 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-xl bg-amber-500/10 text-amber-700 dark:text-amber-400 flex items-center justify-center">
                   <MapPin className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-xl">Physical Lessons</CardTitle>
+                <CardTitle className="font-serif text-xl">Harare Campus Classes</CardTitle>
                 <CardDescription>
-                  In-person classes at Epworth StopOver, Harare for structured learning.
+                  In-person weekend lessons and holiday bootcamps at Epworth StopOver.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 flex-1 flex flex-col justify-between text-sm text-muted-foreground">
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Weekend &amp; holiday intensive classes</span>
+                    <span>Structured weekend schedule</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
@@ -558,75 +593,75 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Mock exams in real exam conditions</span>
+                    <span>Authentic exam hall mock sittings</span>
                   </li>
                 </ul>
-                <Button variant="outline" asChild className="w-full mt-4">
+                <Button variant="outline" asChild className="w-full mt-4 text-xs font-semibold">
                   <Link href="/timetable">View Timetable</Link>
                 </Button>
               </CardContent>
             </Card>
 
             {/* Pathway 3 */}
-            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
+            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
               <CardHeader className="space-y-3 pb-4">
-                <div className="h-12 w-12 rounded-xl bg-emerald-500/10 text-emerald-600 flex items-center justify-center">
-                  <BookOpen className="h-6 w-6" />
+                <div className="h-12 w-12 rounded-xl bg-emerald-500/10 text-emerald-700 dark:text-emerald-400 flex items-center justify-center">
+                  <BookOpenText className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-xl">Homeschooling</CardTitle>
+                <CardTitle className="font-serif text-xl">Homeschooling Program</CardTitle>
                 <CardDescription>
-                  Full curriculum homeschooling for Cambridge &amp; ZIMSEC students.
+                  Full curriculum pacing, individual tracking, and termly academic reporting.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 flex-1 flex flex-col justify-between text-sm text-muted-foreground">
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Structured full syllabus coverage</span>
+                    <span>Complete ZIMSEC &amp; Cambridge syllabus</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Termly assessments &amp; report cards</span>
+                    <span>Official termly grade cards for guardians</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Flexible study hours at home</span>
+                    <span>Customized self-paced study tracks</span>
                   </li>
                 </ul>
-                <Button variant="outline" asChild className="w-full mt-4">
+                <Button variant="outline" asChild className="w-full mt-4 text-xs font-semibold">
                   <Link href="/contact">Inquire Homeschooling</Link>
                 </Button>
               </CardContent>
             </Card>
 
             {/* Pathway 4 */}
-            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col">
+            <Card className="border-border hover:shadow-xl hover:-translate-y-1.5 transition-all duration-300 flex flex-col justify-between">
               <CardHeader className="space-y-3 pb-4">
-                <div className="h-12 w-12 rounded-xl bg-purple-500/10 text-purple-600 flex items-center justify-center">
+                <div className="h-12 w-12 rounded-xl bg-purple-500/10 text-purple-700 dark:text-purple-400 flex items-center justify-center">
                   <Users className="h-6 w-6" />
                 </div>
-                <CardTitle className="text-xl">1-on-1 Tutoring</CardTitle>
+                <CardTitle className="font-serif text-xl">1-on-1 Mentorship</CardTitle>
                 <CardDescription>
-                  Private mentorship focused exclusively on your specific weak areas.
+                  Private individualized coaching targeting specific problem areas.
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-3 flex-1 flex flex-col justify-between text-sm text-muted-foreground">
+              <CardContent className="space-y-3 text-sm text-muted-foreground">
                 <ul className="space-y-2">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Customized pace &amp; attention</span>
+                    <span>100% focused tutor attention</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Intensive past paper drills</span>
+                    <span>Intensive past exam drills</span>
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="h-4 w-4 text-emerald-600 mt-0.5 shrink-0" />
-                    <span>Direct tutor mentorship</span>
+                    <span>Tailored speed and syllabus review</span>
                   </li>
                 </ul>
-                <Button variant="outline" asChild className="w-full mt-4">
-                  <Link href="/enroll">Book 1-on-1</Link>
+                <Button variant="outline" asChild className="w-full mt-4 text-xs font-semibold">
+                  <Link href="/enroll">Book 1-on-1 Tutoring</Link>
                 </Button>
               </CardContent>
             </Card>
@@ -635,110 +670,110 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          AI EXAM PREDICTOR FEATURE SHOWCASE
+          AI EXAM PREDICTOR FORECAST ENGINE
       ========================================================================== */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white relative overflow-hidden">
+      <section className="py-16 md:py-24 bg-slate-950 text-white relative overflow-hidden border-y border-slate-800">
         <div className="container mx-auto px-4 relative z-10">
           <div className="grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-6 space-y-6">
-              <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30">
+              <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs uppercase tracking-wider font-semibold">
                 <Sparkles className="mr-1.5 h-3.5 w-3.5" />
-                AI Exam Intelligence
+                AI Examination Intelligence
               </Badge>
 
-              <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">
-                Predict Examination Trends With AI Intelligence
+              <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight leading-tight">
+                Statistical Examination Forecasting
               </h2>
 
-              <p className="text-base sm:text-lg text-slate-300 leading-relaxed">
-                GlobeDk Elite features Zimbabwe&apos;s first <strong>AI Exam Predictor</strong>. By analyzing past ZIMSEC &amp; Cambridge examination question papers over the last 10 years, our platform projects likely recurring topics, exam question structures, and high-yield revision focus areas.
+              <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-light">
+                GlobeDk Elite Academy incorporates machine learning models analyzing 10+ years of historical ZIMSEC &amp; Cambridge examination papers to predict recurring topic clusters, question structures, and mark weightings.
               </p>
 
-              <div className="space-y-3">
-                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10">
+              <div className="space-y-3 pt-1">
+                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900 border border-slate-800">
                   <Zap className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-sm text-white">Historical Frequency Heatmap</h4>
-                    <p className="text-xs text-slate-400">See which sub-topics repeat every 1, 2, or 3 examination sittings.</p>
+                    <h4 className="font-serif font-bold text-sm text-white">Historical Frequency Mapping</h4>
+                    <p className="text-xs text-slate-400">Maps recurring syllabus topics across past examination sittings.</p>
                   </div>
                 </div>
 
-                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-white/5 border border-white/10">
+                <div className="flex items-start gap-3 p-3.5 rounded-xl bg-slate-900 border border-slate-800">
                   <Sparkles className="h-5 w-5 text-sky-400 shrink-0 mt-0.5" />
                   <div>
-                    <h4 className="font-semibold text-sm text-white">Topic Likelihood Probability</h4>
-                    <p className="text-xs text-slate-400">Prioritize your revision time on the highest probability exam areas.</p>
+                    <h4 className="font-serif font-bold text-sm text-white">High-Yield Priority Indicators</h4>
+                    <p className="text-xs text-slate-400">Enables students to optimize revision on the highest probability topics.</p>
                   </div>
                 </div>
               </div>
 
               <div className="pt-2">
-                <Button asChild size="lg" className="bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-600 hover:to-orange-600 text-white font-semibold shadow-lg">
+                <Button asChild size="lg" className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider shadow-lg h-12 px-7">
                   <Link href="/exam-predictor">
-                    Explore AI Exam Predictor
-                    <ArrowRight className="ml-2 h-5 w-5" />
+                    Launch AI Exam Intelligence
+                    <ArrowRight className="ml-2 h-4 w-4" />
                   </Link>
                 </Button>
               </div>
             </div>
 
-            {/* AI Mock Visual UI */}
+            {/* Visual Forecast Matrix */}
             <div className="lg:col-span-6">
               <div className="rounded-2xl border border-slate-800 bg-slate-900/90 p-6 shadow-2xl backdrop-blur-xl space-y-5">
                 <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                   <div className="flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-amber-400" />
-                    <span className="font-bold text-sm text-white">AI Predictor Simulator</span>
+                    <span className="font-serif font-bold text-sm text-white">ZIMSEC &amp; Cambridge Forecaster</span>
                   </div>
                   <Badge variant="outline" className="text-xs text-slate-400 border-slate-700">
-                    Subject: ZIMSEC Maths
+                    Subject: Pure Mathematics
                   </Badge>
                 </div>
 
                 <div className="space-y-3.5">
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-xs">
-                      <span className="font-semibold text-slate-200">Algebra, Equations &amp; Indices</span>
-                      <span className="text-emerald-400 font-bold">96% Very High</span>
+                      <span className="font-semibold text-slate-200">Integration &amp; Differential Equations</span>
+                      <span className="text-emerald-400 font-bold">98% Very High</span>
                     </div>
                     <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 w-[96%] rounded-full" />
+                      <div className="h-full bg-emerald-500 w-[98%] rounded-full" />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-xs">
-                      <span className="font-semibold text-slate-200">Matrices &amp; Transformations</span>
-                      <span className="text-emerald-400 font-bold">92% Very High</span>
+                      <span className="font-semibold text-slate-200">Vectors in 3D &amp; Scalar Products</span>
+                      <span className="text-emerald-400 font-bold">94% Very High</span>
                     </div>
                     <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-emerald-500 to-teal-400 w-[92%] rounded-full" />
+                      <div className="h-full bg-emerald-500 w-[94%] rounded-full" />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-xs">
-                      <span className="font-semibold text-slate-200">Trigonometry &amp; Bearings</span>
-                      <span className="text-amber-400 font-bold">88% High</span>
+                      <span className="font-semibold text-slate-200">Complex Numbers &amp; De Moivre&apos;s Theorem</span>
+                      <span className="text-amber-400 font-bold">90% High</span>
                     </div>
                     <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-amber-500 to-yellow-400 w-[88%] rounded-full" />
+                      <div className="h-full bg-amber-500 w-[90%] rounded-full" />
                     </div>
                   </div>
 
                   <div className="space-y-1.5">
                     <div className="flex justify-between text-xs">
-                      <span className="font-semibold text-slate-200">Statistics &amp; Cumulative Frequency</span>
-                      <span className="text-sky-400 font-bold">84% Moderate-High</span>
+                      <span className="font-semibold text-slate-200">Binomial Expansion &amp; Partial Fractions</span>
+                      <span className="text-sky-400 font-bold">86% High</span>
                     </div>
                     <div className="h-2 w-full rounded-full bg-slate-800 overflow-hidden">
-                      <div className="h-full bg-gradient-to-r from-sky-500 to-indigo-400 w-[84%] rounded-full" />
+                      <div className="h-full bg-sky-500 w-[86%] rounded-full" />
                     </div>
                   </div>
                 </div>
 
                 <div className="p-3.5 rounded-xl bg-slate-800/80 border border-slate-700 text-xs text-slate-300 flex items-center justify-between">
-                  <span>✨ 12 Paper sessions analyzed (2014 - 2025)</span>
+                  <span>✨ Multi-year datasets analyzed (2014 – 2025)</span>
                   <Link href="/exam-predictor" className="text-amber-400 hover:underline font-semibold">
                     Test Full Tool →
                   </Link>
@@ -750,19 +785,19 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          SUBJECTS & CURRICULUM EXPLORER
+          SUBJECTS & CURRICULUM CATALOG
       ========================================================================== */}
       <section className="py-20 md:py-28 bg-muted/20">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-            <Badge className="bg-primary/10 text-primary border-primary/20">
-              Curriculum &amp; Subjects
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs uppercase font-semibold tracking-wider">
+              Academic Faculties
             </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-              O-Level &amp; A-Level Subjects
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              Disciplines &amp; Subject Catalog
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Comprehensive syllabus coverage across Sciences, Commercials, Humanities and Technology subjects.
+              Comprehensive subject coverage taught by specialized subject masters.
             </p>
           </div>
 
@@ -770,17 +805,17 @@ export default function HomePage() {
             <div className="flex justify-center mb-10">
               <TabsList className="grid grid-cols-2 w-full max-w-md h-12 p-1 bg-muted">
                 <TabsTrigger value="o-level" className="text-sm font-semibold">
-                  O-Level Subjects
+                  O-Level Curriculum
                 </TabsTrigger>
                 <TabsTrigger value="a-level" className="text-sm font-semibold">
-                  A-Level Subjects
+                  A-Level Curriculum
                 </TabsTrigger>
               </TabsList>
             </div>
 
             {/* O-Level Tab */}
             <TabsContent value="o-level">
-              <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {oLevelSubjects.map((sub) => {
                   const Icon = sub.icon;
                   return (
@@ -790,25 +825,25 @@ export default function HomePage() {
                           <div className="h-11 w-11 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                             <Icon className="h-5 w-5" />
                           </div>
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-semibold">
                             {sub.category}
                           </Badge>
                         </div>
-                        <CardTitle className="text-lg pt-1">{sub.name}</CardTitle>
+                        <CardTitle className="font-serif text-lg pt-1">{sub.name}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 text-xs">
                         <div>
-                          <p className="font-semibold text-muted-foreground mb-1.5">Key Topics:</p>
+                          <p className="font-semibold text-muted-foreground mb-1.5 uppercase text-[10px] tracking-wider">Core Syllabus Topics:</p>
                           <div className="flex flex-wrap gap-1.5">
                             {sub.topics.map((t) => (
-                              <span key={t} className="px-2 py-0.5 rounded-sm bg-muted text-muted-foreground">
+                              <span key={t} className="px-2 py-0.5 rounded-sm bg-muted text-muted-foreground text-[11px]">
                                 {t}
                               </span>
                             ))}
                           </div>
                         </div>
                         <div className="pt-3 border-t border-border flex items-center justify-between">
-                          <span className="font-semibold text-primary">{sub.fee}</span>
+                          <span className="font-bold text-primary">{sub.fee}</span>
                           <Link href="/enroll" className="text-xs font-semibold text-foreground hover:text-primary flex items-center gap-1">
                             Enroll <ChevronRight className="h-3 w-3" />
                           </Link>
@@ -829,28 +864,28 @@ export default function HomePage() {
                     <Card key={sub.name} className="border-border hover:shadow-lg transition-all flex flex-col justify-between">
                       <CardHeader className="space-y-2 pb-3">
                         <div className="flex items-center justify-between">
-                          <div className="h-11 w-11 rounded-lg bg-indigo-500/10 text-indigo-600 flex items-center justify-center">
+                          <div className="h-11 w-11 rounded-lg bg-primary/10 text-primary flex items-center justify-center">
                             <Icon className="h-5 w-5" />
                           </div>
-                          <Badge variant="secondary" className="text-xs">
+                          <Badge variant="secondary" className="text-[10px] uppercase tracking-wider font-semibold">
                             {sub.category}
                           </Badge>
                         </div>
-                        <CardTitle className="text-lg pt-1">{sub.name}</CardTitle>
+                        <CardTitle className="font-serif text-xl pt-1">{sub.name}</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4 text-xs">
                         <div>
-                          <p className="font-semibold text-muted-foreground mb-1.5">Key Topics:</p>
+                          <p className="font-semibold text-muted-foreground mb-1.5 uppercase text-[10px] tracking-wider">Advanced Syllabus Modules:</p>
                           <div className="flex flex-wrap gap-1.5">
                             {sub.topics.map((t) => (
-                              <span key={t} className="px-2 py-0.5 rounded-sm bg-muted text-muted-foreground">
+                              <span key={t} className="px-2 py-0.5 rounded-sm bg-muted text-muted-foreground text-[11px]">
                                 {t}
                               </span>
                             ))}
                           </div>
                         </div>
                         <div className="pt-3 border-t border-border flex items-center justify-between">
-                          <span className="font-semibold text-primary">{sub.fee}</span>
+                          <span className="font-bold text-primary">{sub.fee}</span>
                           <Link href="/enroll" className="text-xs font-semibold text-foreground hover:text-primary flex items-center gap-1">
                             Enroll <ChevronRight className="h-3 w-3" />
                           </Link>
@@ -862,15 +897,6 @@ export default function HomePage() {
               </div>
             </TabsContent>
           </Tabs>
-
-          <div className="text-center mt-12">
-            <Button asChild size="lg" variant="outline">
-              <Link href="/subjects">
-                View Full Subject Syllabuses &amp; Fee Details
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
         </div>
       </section>
 
@@ -881,14 +907,14 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center space-y-4 mb-12">
-              <Badge className="bg-emerald-500/20 text-emerald-300 border-emerald-500/30">
-                Transparent Pricing
+              <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs uppercase tracking-wider font-semibold">
+                Transparent Tuition Schedule
               </Badge>
-              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-                Tuition Fee Estimator
+              <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight">
+                Institutional Fee Estimator
               </h2>
-              <p className="text-slate-300 text-base">
-                Calculate your estimated monthly tuition fee with complete transparency. No hidden registration fees.
+              <p className="text-slate-300 text-base font-light">
+                Calculate estimated monthly tuition with total transparency. No hidden administrative registration fees.
               </p>
             </div>
 
@@ -897,7 +923,7 @@ export default function HomePage() {
                 {/* Level Toggle */}
                 <div className="space-y-2">
                   <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                    1. Select Academic Level
+                    1. Academic Level
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
@@ -928,7 +954,7 @@ export default function HomePage() {
                 {/* Mode Toggle */}
                 <div className="space-y-2">
                   <label className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
-                    2. Learning Mode
+                    2. Modality
                   </label>
                   <div className="grid grid-cols-2 gap-2">
                     <button
@@ -940,7 +966,7 @@ export default function HomePage() {
                           : "bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800"
                       }`}
                     >
-                      Physical (Harare)
+                      Harare Campus
                     </button>
                     <button
                       type="button"
@@ -951,7 +977,7 @@ export default function HomePage() {
                           : "bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800"
                       }`}
                     >
-                      Live Online
+                      Live Virtual
                     </button>
                   </div>
                 </div>
@@ -969,7 +995,7 @@ export default function HomePage() {
                         onClick={() => setCalcSubjects(num)}
                         className={`flex-1 py-2.5 rounded-lg text-xs font-bold border transition-all ${
                           calcSubjects === num
-                            ? "bg-emerald-600 text-white border-emerald-500"
+                            ? "bg-amber-600 text-white border-amber-500"
                             : "bg-slate-900 text-slate-300 border-slate-700 hover:bg-slate-800"
                         }`}
                       >
@@ -983,22 +1009,22 @@ export default function HomePage() {
               {/* Price Calculation Output Box */}
               <div className="p-6 rounded-xl bg-slate-900 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-6">
                 <div>
-                  <span className="text-xs text-slate-400 uppercase tracking-wider block">Estimated Monthly Tuition</span>
+                  <span className="text-xs text-slate-400 uppercase tracking-wider block">Total Estimated Monthly Tuition</span>
                   <div className="flex items-baseline gap-2 mt-1">
-                    <span className="text-4xl sm:text-5xl font-extrabold text-emerald-400">
+                    <span className="font-serif text-4xl sm:text-5xl font-bold text-amber-400">
                       US${calculatePrice()}
                     </span>
                     <span className="text-sm text-slate-400">/ month</span>
                   </div>
                   <p className="text-xs text-slate-400 mt-1">
-                    Includes all study notes, mock tests, homework assistance &amp; recorded lesson access.
+                    Includes lesson hours, study notes, past exam question drills &amp; recorded lecture access.
                   </p>
                 </div>
 
                 <div className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto">
-                  <Button asChild size="lg" className="bg-emerald-600 hover:bg-emerald-500 text-white font-semibold">
+                  <Button asChild size="lg" className="bg-amber-600 hover:bg-amber-500 text-white font-bold text-xs uppercase tracking-wider h-12 px-6">
                     <Link href="/enroll">
-                      Enroll With This Plan
+                      Proceed to Admission
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
                   </Button>
@@ -1010,7 +1036,7 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          MEET SENIOR TUTOR & FOUNDER
+          DIRECTORATE & FOUNDER PROFILE
       ========================================================================== */}
       <section className="py-20 md:py-28 bg-background">
         <div className="container mx-auto px-4">
@@ -1027,16 +1053,16 @@ export default function HomePage() {
                         className="object-cover"
                       />
                     </div>
-                    <h3 className="text-2xl font-bold mt-4">Dr John Ariphios Daka</h3>
-                    <p className="text-sm font-semibold text-primary">CEO, Founder &amp; Senior Tutor</p>
-                    <p className="text-xs text-muted-foreground mt-1">Epworth, Harare, Zimbabwe</p>
+                    <h3 className="font-serif text-2xl font-bold mt-4">Dr John Ariphios Daka</h3>
+                    <p className="text-xs font-bold uppercase tracking-wider text-primary">CEO, Founder &amp; Senior Tutor</p>
+                    <p className="text-xs text-muted-foreground mt-1">Harare, Zimbabwe</p>
 
                     <div className="flex gap-2 mt-4">
                       <Button
                         size="sm"
                         variant="outline"
                         asChild
-                        className="text-xs border-emerald-600/30 text-emerald-700 dark:text-emerald-400"
+                        className="text-xs border-emerald-600/30 text-emerald-700 dark:text-emerald-400 font-semibold"
                       >
                         <a
                           href="https://wa.me/263786053315"
@@ -1044,34 +1070,34 @@ export default function HomePage() {
                           rel="noopener noreferrer"
                         >
                           <MessageCircle className="h-3.5 w-3.5 mr-1 text-emerald-600" />
-                          Chat WhatsApp
+                          Chat on WhatsApp
                         </a>
                       </Button>
                     </div>
                   </div>
 
                   <div className="md:col-span-7 space-y-4">
-                    <Badge className="bg-primary/10 text-primary border-primary/20">
-                      Leadership &amp; Vision
+                    <Badge className="bg-primary/10 text-primary border-primary/20 text-xs uppercase font-semibold tracking-wider">
+                      Academic Leadership
                     </Badge>
-                    <h2 className="text-2xl sm:text-3xl font-bold tracking-tight">
-                      Dedicated to Transforming Zimbabwean &amp; African Education
+                    <h2 className="font-serif text-2xl sm:text-3xl font-bold tracking-tight">
+                      &quot;Excellence in Education. Success for Life.&quot;
                     </h2>
                     <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                      &quot;Education is the greatest catalyst for lifelong success. At GlobeDk Elite Academy, we believe no student should be left behind due to location or rigid teaching styles. We integrate empathetic, high-engagement teaching with modern digital tools and past paper methodologies.&quot;
+                      &quot;Education must combine intellectual rigor, moral encouragement, and modern technical capability. At GlobeDk Elite Academy, we mentor each scholar through personalized problem-solving approaches, ensuring full syllabus mastery and high examination confidence.&quot;
                     </p>
                     <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-                      Whether you are preparing for ZIMSEC or Cambridge O &amp; A-Levels, our students receive the individual mentorship, exam drills, and moral encouragement needed to score top grades and secure university admissions.
+                      Under his stewardship, hundreds of students across Harare, nationwide Zimbabwe, and the Southern African region have achieved distinction grades in both ZIMSEC and Cambridge International sittings.
                     </p>
 
                     <div className="pt-2 flex flex-wrap gap-4 text-xs font-semibold text-foreground">
                       <span className="flex items-center gap-1.5">
                         <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                        Expert Mathematics Tutor
+                        Mathematics &amp; Statistics Specialist
                       </span>
                       <span className="flex items-center gap-1.5">
                         <CheckCircle2 className="h-4 w-4 text-emerald-600" />
-                        Computer Science Specialist
+                        Computer Science Faculty Lead
                       </span>
                       <span className="flex items-center gap-1.5">
                         <CheckCircle2 className="h-4 w-4 text-emerald-600" />
@@ -1087,19 +1113,19 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          VERIFIED STUDENT TESTIMONIALS
+          VERIFIED HONORS & TESTIMONIALS
       ========================================================================== */}
       <section className="py-20 md:py-28 bg-muted/30">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-            <Badge className="bg-primary/10 text-primary border-primary/20">
-              Student Success Stories
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs uppercase font-semibold tracking-wider">
+              Student Honors &amp; Results
             </Badge>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-              Real Transformations &amp; Results
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
+              Verified Student Achievements
             </h2>
             <p className="text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Hear directly from students who boosted their grades and achieved top marks with GlobeDk Elite.
+              Documented grade transformations and distinction outcomes.
             </p>
           </div>
 
@@ -1122,9 +1148,9 @@ export default function HomePage() {
                       <Image src={t.image} alt={t.name} fill className="object-cover" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-sm leading-tight">{t.name}</h4>
+                      <h4 className="font-serif font-bold text-sm leading-tight">{t.name}</h4>
                       <p className="text-xs text-muted-foreground">{t.role}</p>
-                      <Badge variant="outline" className="mt-1 text-[10px] text-emerald-600 border-emerald-600/30">
+                      <Badge variant="outline" className="mt-1 text-[10px] text-emerald-700 dark:text-emerald-300 border-emerald-600/30">
                         {t.improvement}
                       </Badge>
                     </div>
@@ -1133,32 +1159,23 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
-
-          <div className="text-center mt-12">
-            <Button asChild variant="outline">
-              <Link href="/testimonials">
-                Read More Student Stories
-                <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
         </div>
       </section>
 
       {/* =========================================================================
-          FAQ ACCORDION SECTION
+          FAQ ACCORDION
       ========================================================================== */}
       <section className="py-20 md:py-28">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-            <Badge className="bg-primary/10 text-primary border-primary/20">
-              Frequently Asked Questions
+            <Badge className="bg-primary/10 text-primary border-primary/20 text-xs uppercase font-semibold tracking-wider">
+              Admissions FAQ
             </Badge>
-            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight">
-              Got Questions? We Have Answers.
+            <h2 className="font-serif text-3xl sm:text-4xl font-bold tracking-tight">
+              Frequently Addressed Inquiries
             </h2>
             <p className="text-base text-muted-foreground">
-              Everything you need to know about enrolling and studying with GlobeDk Elite Academy.
+              Essential details regarding admissions, curricula, and institutional policies.
             </p>
           </div>
 
@@ -1170,7 +1187,7 @@ export default function HomePage() {
                   value={`item-${index}`}
                   className="border border-border rounded-xl px-5 py-1 bg-card shadow-xs"
                 >
-                  <AccordionTrigger className="text-sm sm:text-base font-semibold hover:no-underline text-foreground">
+                  <AccordionTrigger className="font-serif text-sm sm:text-base font-semibold hover:no-underline text-foreground">
                     {faq.q}
                   </AccordionTrigger>
                   <AccordionContent className="text-sm text-muted-foreground leading-relaxed pt-2">
@@ -1184,32 +1201,31 @@ export default function HomePage() {
       </section>
 
       {/* =========================================================================
-          FINAL ENROLLMENT CTA BANNER
+          FINAL ADMISSION CTA BANNER
       ========================================================================== */}
-      <section className="py-20 bg-primary text-primary-foreground relative overflow-hidden">
+      <section className="py-20 bg-slate-950 text-white relative overflow-hidden border-t border-slate-800">
         <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl space-y-6">
-          <Badge className="bg-white/20 text-white border-white/20 text-xs px-3 py-1">
-            ✨ Term Registration Now Open
+          <Badge className="bg-amber-500/20 text-amber-300 border-amber-500/30 text-xs px-3 py-1 font-mono uppercase">
+            Admissions Active for Academic Year 2026 / 2027
           </Badge>
 
-          <h2 className="text-3xl sm:text-5xl font-extrabold tracking-tight">
-            Ready To Excel in Your O-Level or A-Level Examinations?
+          <h2 className="font-serif text-3xl sm:text-5xl font-bold tracking-tight">
+            Begin Your Academic Journey with GlobeDk Elite Academy
           </h2>
 
-          <p className="text-base sm:text-xl text-primary-foreground/90 max-w-2xl mx-auto leading-relaxed">
-            Join hundreds of confident students mastering their subjects with GlobeDk Elite Academy. Enroll online in under 2 minutes.
+          <p className="text-base sm:text-lg text-slate-300 max-w-2xl mx-auto leading-relaxed font-light">
+            Secure admission in your desired subjects. Complete the official registration online in under 2 minutes.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
             <Button
               asChild
               size="lg"
-              variant="secondary"
-              className="font-bold text-base h-13 px-8 shadow-xl"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs uppercase tracking-wider h-13 px-8 shadow-xl"
             >
               <Link href="/enroll">
-                Enroll Now
-                <ArrowRight className="ml-2 h-5 w-5" />
+                Apply Online Now
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
 
@@ -1217,15 +1233,15 @@ export default function HomePage() {
               asChild
               size="lg"
               variant="outline"
-              className="bg-primary-foreground/10 border-primary-foreground/30 hover:bg-primary-foreground/20 text-white font-semibold text-base h-13 px-8"
+              className="bg-white/5 border-slate-700 hover:bg-white/10 text-white font-semibold text-xs uppercase tracking-wider h-13 px-8"
             >
               <a
                 href="https://wa.me/263786053315?text=Hello%20GlobeDK,%20I%20want%20to%20enroll%20for%20lessons"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <MessageCircle className="mr-2 h-5 w-5 text-emerald-400" />
-                WhatsApp Us Directly
+                <MessageCircle className="mr-2 h-4 w-4 text-emerald-400" />
+                WhatsApp Admissions
               </a>
             </Button>
           </div>

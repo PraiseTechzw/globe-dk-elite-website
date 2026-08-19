@@ -1,16 +1,24 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter, Geist_Mono } from "next/font/google";
+import { Inter, Playfair_Display, Geist_Mono } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
+import { LegalConsentBanner } from "@/components/legal-consent-banner";
 import "./globals.css";
 
 const _inter = Inter({
   subsets: ["latin"],
+  variable: "--font-sans",
+});
+
+const _playfair = Playfair_Display({
+  subsets: ["latin"],
+  variable: "--font-serif",
 });
 
 const _geistMono = Geist_Mono({
   subsets: ["latin"],
+  variable: "--font-mono",
 });
 
 export const metadata: Metadata = {
@@ -150,7 +158,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en-ZW">
+    <html lang="en-ZW" className={`${_inter.variable} ${_playfair.variable} ${_geistMono.variable}`}>
       <head>
         <meta charSet="utf-8" />
 
@@ -179,7 +187,7 @@ export default function RootLayout({
           href="/Logo.png"
         />
 
-        {/* Educational Organization */}
+        {/* Educational Organization Schema */}
         <Script
           id="organization-schema"
           type="application/ld+json"
@@ -189,9 +197,9 @@ export default function RootLayout({
               "@type": "EducationalOrganization",
               name: "GlobeDk Elite Academy",
               url: "https://www.globedk.co.zw",
-              logo: "https://www.globedk.co.zw/image1.png",
-              image: "https://www.globedk.co.zw/image1.png",
-              email: "jdaka@globedk.co.zw",
+              logo: "https://www.globedk.co.zw/Logo.png",
+              image: "https://www.globedk.co.zw/Logo.png",
+              email: "admission@globedk.co.zw",
               telephone: "+263786053315",
 
               founder: {
@@ -204,7 +212,7 @@ export default function RootLayout({
 
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Epworth",
+                streetAddress: "Epworth StopOver",
                 addressLocality: "Harare",
                 addressCountry: "Zimbabwe",
               },
@@ -234,46 +242,27 @@ export default function RootLayout({
               "@context": "https://schema.org",
               "@type": "LocalBusiness",
               name: "GlobeDk Elite Academy",
-              image: "https://www.globedk.co.zw/image1.png",
+              image: "https://www.globedk.co.zw/Logo.png",
               url: "https://www.globedk.co.zw",
               telephone: "+263786053315",
-              email: "jdaka@globedk.co.zw",
+              email: "admission@globedk.co.zw",
 
               openingHours: "Mo-Sa 08:00-18:00",
 
               address: {
                 "@type": "PostalAddress",
-                streetAddress: "Epworth",
+                streetAddress: "Epworth StopOver",
                 addressLocality: "Harare",
                 addressCountry: "ZW",
               },
             }),
           }}
         />
-
-        {/* Search Box */}
-        <Script
-          id="website-schema"
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "WebSite",
-              name: "GlobeDk Elite Academy",
-              url: "https://www.globedk.co.zw",
-              potentialAction: {
-                "@type": "SearchAction",
-                target:
-                  "https://www.globedk.co.zw/search?q={search_term_string}",
-                "query-input": "required name=search_term_string",
-              },
-            }),
-          }}
-        />
       </head>
 
-      <body className={`${_inter.className} antialiased`}>
+      <body className={`${_inter.className} font-sans antialiased`}>
         {children}
+        <LegalConsentBanner />
         <Analytics />
       </body>
     </html>

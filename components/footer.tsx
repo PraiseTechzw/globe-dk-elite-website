@@ -9,8 +9,10 @@ import {
   ArrowUpRight,
   ShieldCheck,
   GraduationCap,
-  MessageCircle,
+  Scale,
+  Lock,
 } from "lucide-react"
+import { FaWhatsapp } from "react-icons/fa6"
 
 export function Footer() {
   const currentYear = new Date().getFullYear()
@@ -18,19 +20,19 @@ export function Footer() {
   return (
     <footer className="border-t border-border bg-slate-950 text-slate-200">
       {/* Top Pre-Footer Banner */}
-      <div className="border-b border-slate-800/80 bg-slate-900/50">
+      <div className="border-b border-slate-800/80 bg-slate-900/60">
         <div className="container mx-auto px-4 py-8">
           <div className="flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="flex items-center gap-4 text-center md:text-left">
-              <div className="h-12 w-12 rounded-xl bg-primary/20 flex items-center justify-center text-primary shrink-0">
-                <GraduationCap className="h-6 w-6 text-primary-foreground" />
+              <div className="h-12 w-12 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400 shrink-0">
+                <GraduationCap className="h-6 w-6" />
               </div>
               <div>
-                <h3 className="font-bold text-lg text-white">
-                  Join GlobeDk Elite Academy Today
+                <h3 className="font-serif font-bold text-lg text-white">
+                  GlobeDk Elite Academy Admissions
                 </h3>
                 <p className="text-sm text-slate-400">
-                  Online Lessons, Physical Classes in Epworth Harare, Homeschooling &amp; AI-powered Exam Prep.
+                  Online Virtual Classrooms, Harare Campus Lessons, Homeschooling &amp; AI-Powered Exam Prep.
                 </p>
               </div>
             </div>
@@ -39,14 +41,14 @@ export function Footer() {
                 href="https://wa.me/263786053315?text=Hello%20GlobeDK%20Elite%20Academy,%20I%20would%20like%20to%20enroll%20for%20lessons"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-sm transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-medium text-xs uppercase tracking-wider transition-colors shadow-sm"
               >
-                <MessageCircle className="h-4 w-4" />
-                Chat on WhatsApp
+                <FaWhatsapp className="h-4 w-4" />
+                WhatsApp Admissions
               </a>
               <Link
                 href="/enroll"
-                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-medium text-sm transition-colors shadow-sm"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-xs uppercase tracking-wider transition-colors shadow-sm"
               >
                 Online Registration
                 <ArrowUpRight className="h-4 w-4" />
@@ -62,35 +64,35 @@ export function Footer() {
           {/* Brand Col (2 cols on lg) */}
           <div className="lg:col-span-2 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-white p-1">
+              <div className="flex h-14 w-14 shrink-0 items-center justify-center overflow-hidden rounded-2xl border border-slate-700 bg-white shadow-lg shadow-black/20">
                 <Image
                   src="/Logo.png"
-                  alt="GlobeDk Elite Academy Logo"
-                  width={44}
-                  height={44}
-                  className="object-contain"
+                  alt=""
+                  width={72}
+                  height={72}
+                  className="scale-[1.45] object-contain"
                   priority
                 />
               </div>
               <div>
-                <span className="font-bold text-xl text-white block">GlobeDk Elite Academy</span>
-                <span className="text-xs text-slate-400">Excellence in Education. Success for Life.</span>
+                <span className="font-serif font-bold text-xl text-white block">GlobeDk Elite</span>
+                <span className="text-[10px] text-amber-300 uppercase tracking-[0.18em] font-bold">Academy · Harare &amp; Online</span>
               </div>
             </div>
 
             <p className="text-sm text-slate-400 leading-relaxed max-w-sm">
-              Zimbabwe's trusted education academy offering professional tutoring for ZIMSEC &amp; Cambridge O-Level and A-Level curricula through Live Virtual Classes, Physical Lessons, Homeschooling, and One-on-One Mentorship.
+              Zimbabwe&apos;s trusted educational center offering rigorous preparation for ZIMSEC &amp; Cambridge International O-Level and A-Level examinations through physical campus classes, live virtual instruction, and AI syllabus intelligence.
             </p>
 
             <div className="flex items-center gap-2 text-xs text-slate-400">
               <ShieldCheck className="h-4 w-4 text-emerald-400 shrink-0" />
-              <span>Qualified Tutors • Proven 95% Pass Rate Track Record</span>
+              <span>Certified Faculty • Proven 95% Examination Pass Rate Track Record</span>
             </div>
           </div>
 
-          {/* Quick Links */}
+          {/* Institutional Navigation */}
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm uppercase tracking-wider text-slate-200">
+            <h4 className="font-serif font-bold text-sm uppercase tracking-wider text-slate-200">
               Navigation
             </h4>
             <ul className="space-y-2 text-sm text-slate-400">
@@ -101,12 +103,12 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/about" className="hover:text-white transition-colors">
-                  About the Academy
+                  Academy &amp; Leadership
                 </Link>
               </li>
               <li>
                 <Link href="/subjects" className="hover:text-white transition-colors">
-                  Subjects &amp; Pricing
+                  Curriculum &amp; Tuition
                 </Link>
               </li>
               <li>
@@ -116,20 +118,20 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/testimonials" className="hover:text-white transition-colors">
-                  Student Success Stories
+                  Honors &amp; Results
                 </Link>
               </li>
               <li>
                 <Link href="/contact" className="hover:text-white transition-colors">
-                  Contact Us
+                  Admissions Office
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Academic Programmes */}
+          {/* Academic Disciplines */}
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm uppercase tracking-wider text-slate-200">
+            <h4 className="font-serif font-bold text-sm uppercase tracking-wider text-slate-200">
               Programmes
             </h4>
             <ul className="space-y-2 text-sm text-slate-400">
@@ -150,70 +152,55 @@ export function Footer() {
               </li>
               <li>
                 <Link href="/enroll" className="hover:text-white transition-colors">
-                  One-on-One Tutoring
+                  1-on-1 Mentorship
                 </Link>
               </li>
               <li>
-                <Link href="/exam-predictor" className="hover:text-amber-400 transition-colors flex items-center gap-1.5">
+                <Link href="/exam-predictor" className="hover:text-amber-400 transition-colors flex items-center gap-1.5 font-medium">
                   <Sparkles className="h-3.5 w-3.5 text-amber-400" />
-                  AI Exam Predictor
+                  AI Exam Intelligence
                 </Link>
               </li>
               <li>
                 <Link href="/payment" className="hover:text-white transition-colors">
-                  Payment Options
+                  Tuition Payment Methods
                 </Link>
               </li>
             </ul>
           </div>
 
-          {/* Contact Details */}
+          {/* Legal & Compliance */}
           <div className="space-y-3">
-            <h4 className="font-semibold text-sm uppercase tracking-wider text-slate-200">
-              Contact &amp; Location
+            <h4 className="font-serif font-bold text-sm uppercase tracking-wider text-slate-200">
+              Legal &amp; Policies
             </h4>
-            <ul className="space-y-3 text-sm text-slate-400">
-              <li className="flex items-start gap-2.5">
-                <MapPin className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                <span>Epworth StopOver, Harare, Zimbabwe</span>
+            <ul className="space-y-2 text-sm text-slate-400">
+              <li>
+                <Link href="/privacy" className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <Lock className="h-3.5 w-3.5 text-slate-400" />
+                  Academic Privacy Policy
+                </Link>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Phone className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                <div className="space-y-1">
-                  <a
-                    href="tel:+263786053315"
-                    className="hover:text-white transition-colors block"
-                  >
-                    +263 78 605 3315
-                  </a>
-                  <a
-                    href="tel:+263713225707"
-                    className="hover:text-white transition-colors block"
-                  >
-                    +263 71 322 5707
-                  </a>
-                </div>
+              <li>
+                <Link href="/terms" className="hover:text-white transition-colors flex items-center gap-1.5">
+                  <Scale className="h-3.5 w-3.5 text-slate-400" />
+                  Terms of Enrollment
+                </Link>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Mail className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                <div className="space-y-0.5">
-                  <a
-                    href="mailto:admission@globedk.co.zw"
-                    className="hover:text-white transition-colors block"
-                  >
-                    admission@globedk.co.zw
-                  </a>
-                  <a
-                    href="mailto:principal@globedk.co.zw"
-                    className="hover:text-white transition-colors block text-xs text-slate-400"
-                  >
-                    principal@globedk.co.zw
-                  </a>
-                </div>
+              <li>
+                <Link href="/terms#conduct" className="hover:text-white transition-colors">
+                  Student Code of Conduct
+                </Link>
               </li>
-              <li className="flex items-start gap-2.5">
-                <Clock className="h-4 w-4 mt-0.5 text-primary shrink-0" />
-                <span className="text-xs">Sat: 8am - 6pm | Sun: 8am - 4pm | Online: 24/7</span>
+              <li>
+                <Link href="/privacy#minors" className="hover:text-white transition-colors">
+                  Minor &amp; Guardian Consent
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-white transition-colors">
+                  Dispute &amp; Inquiries
+                </Link>
               </li>
             </ul>
           </div>
@@ -225,12 +212,12 @@ export function Footer() {
             &copy; {currentYear} GlobeDk Elite Academy. All rights reserved. Directed by Dr. John Ariphios Daka.
           </p>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <span className="text-slate-400">Accepted Payment Methods:</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-800 text-slate-300 font-medium">EcoCash</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-800 text-slate-300 font-medium">Innbucks</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-800 text-slate-300 font-medium">USD Cash</span>
-            <span className="px-2 py-0.5 rounded-sm bg-slate-800 text-slate-300 font-medium">Bank Transfer</span>
+          <div className="flex flex-wrap items-center gap-2.5">
+            <span className="text-slate-500">Accepted Payment Channels:</span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">EcoCash</span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">Innbucks</span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">USD Cash</span>
+            <span className="px-2 py-0.5 rounded-sm bg-slate-900 border border-slate-800 text-slate-300 font-medium">Bank Transfer</span>
           </div>
         </div>
       </div>
